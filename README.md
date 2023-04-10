@@ -1,2 +1,2 @@
-# wordle 2
-Wordle. But better!
+# Mini Crossword
+Infinite mini crosswords. Yay

@@ -1,6 +1,10 @@
 # CrossWar
 Browser-based multiplayer mini crossword game
 
+*To run the react app* <br>
+Clone repo, then run the following commands in the terminal:
+- "cd crosswar"
+- "npm start"
 
 ## Core Gameplay/Features
 - Solve a mini crossword puzzle at the same time as your opponent(s)

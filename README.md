@@ -19,7 +19,7 @@ Similar to NYT's mini crossword
 
 ### Examples
 If your crossword looks like this (fully completed):
-![Screenshot (384)](https://user-images.githubusercontent.com/93235878/234931407-f7163501-6b49-422b-b985-409027cfc389.png)
+![Completed Board](https://user-images.githubusercontent.com/93235878/234933651-dca9d01c-aa75-4e71-9ecf-9d29e01df979.png)
 
 Your opponent will see the following representation: <br>
 ⬛🟩🟩🟩🟩 <br>
@@ -29,7 +29,7 @@ Your opponent will see the following representation: <br>
 🟩🟩🟩⬛⬛ <br>
 
 If your crossword looks like this (partially completed):
-![Screenshot (382)](https://user-images.githubusercontent.com/93235878/234932083-36dae093-6f34-4595-921a-356561aa70fc.png)
+![Incomplete Board](https://user-images.githubusercontent.com/93235878/234933678-1ebaf427-e9ee-4685-93aa-3638d08ecba0.png)
 
 Your opponent will see: <br>
 ⬛🟩🟩🟩🟩 <br>

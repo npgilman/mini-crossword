@@ -38,5 +38,5 @@ Your opponent will see: <br>
 🟩🟩🟧⬛⬛ <br>
 
 
-Infinite mini crosswords. Yay
+Infinite mini crosswords. Yay. <br>
 Created by Nathan Gilman, CJ Annunziato, David Payne, Lester Bonilla

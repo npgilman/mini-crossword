@@ -2,6 +2,7 @@
   text-align: center;
 }
 
+/* default react styling */
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -13,10 +14,7 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
+/* single box where text is entered */
 #letter-box {
   width: 32px;
   height: 32px; 
@@ -24,4 +22,11 @@
   text-align: center;
   font-size: 32px;
   text-transform: uppercase;
+}
+
+/* single row of opponent's status board */
+#opponent-row {
+  font-size: 16px;
+  line-height: .2;
+  letter-spacing: -2px;
 }

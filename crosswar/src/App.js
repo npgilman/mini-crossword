@@ -14,11 +14,8 @@ function App() {
   // Update the status board on each input
   function UpdateStatusBoard(content, id) {
     // Correct answers for each row
-    var row1Correct = "ABCDE";
-    var row2Correct = "FGHIJ";
-    var row3Correct = "KLMNO";
-    var row4Correct = "PQRST";
-    var row5Correct = "UVWXY";
+
+    const correctRows = ["ABCDE", "FGHIJ", "KLMNO", "PQRST", "UVWXY"];
   
     // split id into column and row
     var column = 0;
@@ -36,79 +33,51 @@ function App() {
       column = 5;
     }
   
-    // block is the new status of passed-in letter box, defaults to orange
-    // if the value of passed-in letter box is empty, block becomes white
-    // if the value of passed-in letter box matches the correct value, block becomes green
+    // default to orange (incorrect square)
     var block = '☒';
-
-    // store the status of the passed-in letter box's entire row as an array
-    // update the status of passed-in letter box to 'block'
-    var tempStatusRow;
-
+    // if content is null -> white (empty square)
     if (upperCaseContent === "") {
       block = '☐'
+    } 
+    // if content matches expected -> green (correct square)
+    if (upperCaseContent === correctRows[row - 1][column - 1]) {
+      block = '☑';
     }
-  
+
+    var tempStatusRow
     if (row === 1) {
-      if (upperCaseContent === row1Correct[column - 1]) {
-        block = '☑';
-      }
+      // store the entire row's status as an array, update the correct index to block
       tempStatusRow = rowStatus.row1.split('');
       tempStatusRow[column - 1] = block;
-
-      // update the actual html element
+      // update the actual html element with the new row status
       setRowStatus({
         ...rowStatus,
         row1: tempStatusRow.join('')
       });
-  
     } else if (row === 2) {
-      if (upperCaseContent === row2Correct[column - 1]) {
-        block = '☑';
-      }
       tempStatusRow = rowStatus.row2.split('');
       tempStatusRow[column - 1] = block;
-
-      // update the actual html element
       setRowStatus({
         ...rowStatus,
         row2: tempStatusRow.join('')
       });
-      
     } else if (row === 3) {
-      if (upperCaseContent === row3Correct[column - 1]) {
-        block = '☑';
-      }
       tempStatusRow = rowStatus.row3.split('');
       tempStatusRow[column - 1] = block;
-
-      // update the actual html element
       setRowStatus({
         ...rowStatus,
         row3: tempStatusRow.join('')
       });
-
     } else if (row === 4) {
-      if (upperCaseContent === row4Correct[column - 1]) {
-        block = '☑';
-      }
       tempStatusRow = rowStatus.row4.split('');
       tempStatusRow[column - 1] = block;
-
-      // update the actual html element
       setRowStatus({
         ...rowStatus,
         row4: tempStatusRow.join('')
       });
-
     } else if (row === 5) {
-      if (upperCaseContent === row5Correct[column - 1]) {
-        block = '☑';
-      }
       tempStatusRow = rowStatus.row5.split('');
       tempStatusRow[column - 1] = block;
-
-      // update the actual html element
       setRowStatus({
         ...rowStatus,
         row5: tempStatusRow.join('')

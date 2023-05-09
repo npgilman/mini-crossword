@@ -20,8 +20,17 @@
   height: 32px; 
   margin: 1px;
   text-align: center;
+  border: 2px solid transparent;
   font-size: 32px;
   text-transform: uppercase;
+}
+
+/* when a single box is clicked on and ready to be typed on */
+.letter-box:focus {
+  background-color: #ffda37;
+  caret-color: transparent;
+  outline: none;
+  border: 2px solid transparent; 
 }
 
 /* single row of opponent's status board */

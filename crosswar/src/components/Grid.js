@@ -19,7 +19,11 @@ const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
     if (selection.row === rowIndex && selection.col === -1 && selection.cell[0] == rowIndex && selection.cell[1] == colIndex) {
         // If the same cell is already selected, switch to highlighting column
         setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
-    } 
+    }
+    else if (selection.row === -1 && selection.col === colIndex && selection.cell[0] == rowIndex && selection.cell[1] == colIndex) {
+        // If the same cell is already selected, switch to highlighting column
+        setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+    }
     else if (selection.col == -1) {
         setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
     }

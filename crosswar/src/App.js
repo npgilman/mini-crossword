@@ -1,5 +1,6 @@
 import './App.css';
 import { useState } from 'react'
+import Grid from './components/Grid.js';
 
 function App() {
   // set a state so that Status Board can be altered in an external function
@@ -88,6 +89,13 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <h1>New Board</h1>
+        <p>(Not linked to opponent's board yet)</p>
+        <Grid />
+        <br></br>
+        <br></br>
+        <br></br>
+        <h1>Old Board</h1>
 
         {/* Opponent status board */}
         <div id="opponent-board">

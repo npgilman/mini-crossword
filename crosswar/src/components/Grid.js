@@ -16,18 +16,18 @@ const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
     e.target.value = val;
 
 
-    if (selection.row === rowIndex && selection.col === -1 && selection.cell[0] == rowIndex && selection.cell[1] == colIndex) {
+    if (selection.row === rowIndex && selection.col === -1 && selection.cell[0] === rowIndex && selection.cell[1] === colIndex) {
         // If the same cell is already selected, switch to highlighting column
         setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
     }
-    else if (selection.row === -1 && selection.col === colIndex && selection.cell[0] == rowIndex && selection.cell[1] == colIndex) {
+    else if (selection.row === -1 && selection.col === colIndex && selection.cell[0] === rowIndex && selection.cell[1] === colIndex) {
         // If the same cell is already selected, switch to highlighting column
         setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
     }
-    else if (selection.col == -1) {
+    else if (selection.col === -1) {
         setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
     }
-    else if (selection.row == -1) {
+    else if (selection.row === -1) {
         setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
     }
     else {
@@ -38,11 +38,11 @@ const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
 
 const handleCellChange = (e, rowIndex, colIndex) => {
     // key entered is in e.key
-    if (e.key != "Backspace" && e.key.length > 1) {
+    if (e.key !== "Backspace" && e.key.length > 1) {
         // prevents keys like "Up" for the up arrow key from doing anything
     }
-    else if (e.key == "Backspace") { // backspace pressed
-        if (e.target.value != "") {
+    else if (e.key === "Backspace") { // backspace pressed
+        if (e.target.value !== "") {
             e.target.value = "";
             const updatedGrid = [...grid];
             updatedGrid[rowIndex][colIndex] = e.target.value;
@@ -52,7 +52,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
             // switch locations
     
             // switch up a row
-            if (selection.row != -1) {
+            if (selection.row !== -1) {
                 colIndex = colIndex - 1;
                 const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
                 if (cell) {
@@ -73,7 +73,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
             }
 
             // switch up a column
-            else if (selection.col != -1) {
+            else if (selection.col !== -1) {
                 rowIndex = rowIndex - 1;
                 const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
                 if (cell) {
@@ -108,7 +108,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
         // switch locations
         
         // switch down a row
-        if (selection.row != -1) {
+        if (selection.row !== -1) {
             colIndex = colIndex + 1;
             const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
             if (cell) {
@@ -118,7 +118,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
         }
 
         // switch down a column
-        else if (selection.col != -1) {
+        else if (selection.col !== -1) {
             rowIndex = rowIndex + 1;
             const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
             if (cell) {
@@ -135,7 +135,7 @@ const handleCellChange2 = (e) => {
 }
 
 function backgroundColor(rowIndex, colIndex) { // cell color
-    if (selection.cell[0] == rowIndex && selection.cell[1] == colIndex) { // current box 
+    if (selection.cell[0] === rowIndex && selection.cell[1] === colIndex) { // current box 
         return "#ffda37"; // yellow
     }
     else if ((rowIndex === selection.row || colIndex === selection.col)) { // row or column 
@@ -168,8 +168,4 @@ function backgroundColor(rowIndex, colIndex) { // cell color
       ))}
     </div>
   );
-
-  return (
-    <div>Grid</div>
-  )
 }

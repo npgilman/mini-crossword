@@ -35,7 +35,8 @@
 
 /* single row of opponent's status board */
 .opponent-row {
-  font-size: 20px;
+  display: inline-block;
+  font-size: 16px;
   line-height: 0;
-  letter-spacing: 0px;
+  letter-spacing: 1px;
 }

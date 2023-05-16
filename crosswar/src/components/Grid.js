@@ -1,20 +1,50 @@
 import React, { useState, useRef } from 'react'
 
+let answers = [
+    "abcde",
+    "fghij",
+    "klmno",
+    "pqrst",
+    "uvwxy",
+]
+
 export default function Grid() {
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill("")));
 const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // used for blue highlights (row or col)
+const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill("⬜")));
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
 
-const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
+const handleStatusUpdate = (rowIndex, colIndex, value) => {
+    const updatedStatusBoard = [...statusBoard];
+    console.log(value === answers[rowIndex][colIndex-1])
+    var newIndicator = "⬜";
+    switch (value) {
+      case "Backspace":
+        newIndicator = "⬜";
+        break;
+      case answers[rowIndex][colIndex-1]:
+        newIndicator = "🟩";
+        break;
+      case "":
+        newIndicator = "⬜";
+        break;
+      default:
+        newIndicator = "🟧"
+        break;
+    }
+    console.log(newIndicator);
+    updatedStatusBoard[rowIndex][colIndex-1] = newIndicator;
+    setStatusBoard(updatedStatusBoard)
+};
 
+const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
     // make cursor go to end of the string :P
     const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
     cell.focus();
     var val = e.target.value;
     e.target.value = '';
     e.target.value = val;
-
 
     if (selection.row === rowIndex && selection.col === -1 && selection.cell[0] === rowIndex && selection.cell[1] === colIndex) {
         // If the same cell is already selected, switch to highlighting column
@@ -51,18 +81,18 @@ const handleCellChange = (e, rowIndex, colIndex) => {
         else {
             // switch locations
     
-            // switch up a row
+            // move up a row
             if (selection.row !== -1) {
                 colIndex = colIndex - 1;
                 const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
                 if (cell) {
                     // focuse
                     cell.focus();
-                    console.log(cell.value)
+                    //console.log(cell.value)
 
                     // remove letter thats there
                     cell.value = "";
-                    console.log(cell.value)
+                    //console.log(cell.value)
                     const updatedGrid = [...grid];
                     updatedGrid[rowIndex][colIndex] = e.target.value;
                     setGrid(updatedGrid)
@@ -72,7 +102,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
                 }
             }
 
-            // switch up a column
+            // move up a column
             else if (selection.col !== -1) {
                 rowIndex = rowIndex - 1;
                 const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
@@ -94,7 +124,6 @@ const handleCellChange = (e, rowIndex, colIndex) => {
     }
     else {
         // get last key entered and replace value with that last key entered
-
         var string = e.key;
         string = string[string.length - 1];
         e.target.value = string;
@@ -106,8 +135,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
         setGrid(updatedGrid);
 
         // switch locations
-        
-        // switch down a row
+        // move down a row
         if (selection.row !== -1) {
             colIndex = colIndex + 1;
             const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
@@ -117,7 +145,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
             }
         }
 
-        // switch down a column
+        // move down a column
         else if (selection.col !== -1) {
             rowIndex = rowIndex + 1;
             const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
@@ -127,12 +155,8 @@ const handleCellChange = (e, rowIndex, colIndex) => {
             }  
         }
     }
-
+    handleStatusUpdate(rowIndex, colIndex, e.key);
 };
-
-const handleCellChange2 = (e) => {
-    // was giving me an error without this function, so its here but doesn't do anything...
-}
 
 function backgroundColor(rowIndex, colIndex) { // cell color
     if (selection.cell[0] === rowIndex && selection.cell[1] === colIndex) { // current box 
@@ -147,25 +171,37 @@ function backgroundColor(rowIndex, colIndex) { // cell color
 }
 
   return (
-    <div ref={crosswordRef}>
-      {grid.map((row, rowIndex) => (
+    <>
+    <div>
+      {statusBoard.map((row, rowIndex) => (
         <div key={rowIndex}>
           {row.map((cell, colIndex) => (
-            <input className="letter-box"
-              key={colIndex}
-              id={"cell"+rowIndex+"-"+colIndex}
-              value={cell}
-              onChange = {(e) => handleCellChange2(e)}
-              onKeyDown={(e) => handleCellChange(e, rowIndex, colIndex)}
-              onClick={(e) => handleCellClick(e, rowIndex, colIndex)}
-              style={{
-                backgroundColor:
-                backgroundColor(rowIndex, colIndex)
-              }}
-            />
+            <div key={colIndex} className="opponent-row">
+                {cell}
+            </div>
           ))}
         </div>
       ))}
     </div>
+    <div ref={crosswordRef}>
+        {grid.map((row, rowIndex) => (
+            <div key={rowIndex}>
+                {row.map((cell, colIndex) => (
+                    <input className="letter-box"
+                    key={colIndex}
+                    id={"cell"+rowIndex+"-"+colIndex}
+                    value={cell}
+                    onKeyDown={(e) => handleCellChange(e, rowIndex, colIndex)}
+                    onClick={(e) => handleCellClick(e, rowIndex, colIndex)}
+                    style={{
+                        backgroundColor:
+                        backgroundColor(rowIndex, colIndex)
+                    }}
+                    />
+                ))}
+            </div>
+        ))}
+    </div>
+    </>    
   );
 }

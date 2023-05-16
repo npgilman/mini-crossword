@@ -89,8 +89,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>New Board</h1>
-        <p>(Not linked to opponent's board yet)</p>
+        <h1>New Board</h1>        
         <Grid />
         <br></br>
         <br></br>
@@ -126,39 +125,39 @@ function App() {
         {/* Each box can contain a single uppercase letter (see App.css .letter-box) */}
         {/* id attribute refers to its position in the coordinate grid. Ex: row 1 column A is id="1a"*/}
         <div name="row-1">
-          <input type="text" className="letter-box" id="1a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off" />
-          <input type="text" className="letter-box" id="1b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="1c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="1d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="1e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
+          <input type="text" className="letter-box" id="1a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off" />
+          <input type="text" className="letter-box" id="1b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="1c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="1d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="1e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
         </div>
         <div name="row-2">
-          <input type="text" className="letter-box" id="2a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="2b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="2c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="2d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="2e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
+          <input type="text" className="letter-box" id="2a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="2b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="2c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="2d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="2e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
         </div>
         <div name="row-3">
-          <input type="text" className="letter-box" id="3a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="3b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="3c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="3d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="3e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
+          <input type="text" className="letter-box" id="3a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="3b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="3c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="3d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="3e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
         </div>
         <div name="row-4">
-          <input type="text" className="letter-box" id="4a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="4b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="4c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="4d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="4e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
+          <input type="text" className="letter-box" id="4a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="4b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="4c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="4d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="4e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
         </div>
         <div name="row-5">
-          <input type="text" className="letter-box" id="5a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="5b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="5c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="5d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
-          <input type="text" className="letter-box" id="5e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autocomplete="off"/>
+          <input type="text" className="letter-box" id="5a" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="5b" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="5c" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="5d" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
+          <input type="text" className="letter-box" id="5e" maxLength="1" onChange={(event) => UpdateStatusBoard(event.target.value, event.target.id)} autoComplete="off"/>
         </div>
 
       </header>

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 
+// answers as reflected in the status board
 let answers = [
     "abcde",
     "fghij",
@@ -15,9 +16,12 @@ const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Arr
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
 
+// updates the status board when a cell change occurs (see handleCellChange)
 const handleStatusUpdate = (rowIndex, colIndex, value) => {
+    // create a copy of current status board
     const updatedStatusBoard = [...statusBoard];
-    console.log(value === answers[rowIndex][colIndex-1])
+
+    // replace indicator of the changed cell accordingly
     var newIndicator = "⬜";
     switch (value) {
       case "Backspace":
@@ -30,10 +34,11 @@ const handleStatusUpdate = (rowIndex, colIndex, value) => {
         newIndicator = "⬜";
         break;
       default:
-        newIndicator = "🟧"
+        newIndicator = "🟧";
         break;
     }
-    console.log(newIndicator);
+    // update status board with the new indicator
+    // !! believe that something here is causing the backspace error
     updatedStatusBoard[rowIndex][colIndex-1] = newIndicator;
     setStatusBoard(updatedStatusBoard)
 };
@@ -172,7 +177,8 @@ function backgroundColor(rowIndex, colIndex) { // cell color
 
   return (
     <>
-    <div>
+    {/* Opponent's Status Board */}
+    <div className="opponent-grid">
       {statusBoard.map((row, rowIndex) => (
         <div key={rowIndex}>
           {row.map((cell, colIndex) => (
@@ -183,6 +189,8 @@ function backgroundColor(rowIndex, colIndex) { // cell color
         </div>
       ))}
     </div>
+    <br></br>
+    {/* Interactive Crossword Grid */}
     <div ref={crosswordRef}>
         {grid.map((row, rowIndex) => (
             <div key={rowIndex}>

@@ -33,10 +33,15 @@
   border: 2px solid transparent; 
 }
 
-/* single row of opponent's status board */
+/* parent element of status board*/
+.opponent-grid {
+  display: inline-block;
+  font-size: 0px;
+}
+
+/* single row of status board */
 .opponent-row {
   display: inline-block;
   font-size: 16px;
-  line-height: 0;
-  letter-spacing: 1px;
+  letter-spacing: 0px;
 }

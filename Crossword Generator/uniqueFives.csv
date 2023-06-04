@@ -1106,7 +1106,7 @@ OILOF,___ vitriol (sulfuric acid)
 MODUS,___ vivendi
 SOTTO,___ voce
 PUNIC,___ Wars (conflicts of the second and third centuries B.C.)
-OPIUM,"___ Wars, conflicts of 1839-42 and 1856-60"
+OPIUM,Highly addictive narcotic derived from a poppy
 INHOT,___ water
 CHAIM,"___ Weizmann, first president of Israel"
 JODIE,"___ Whittaker, player of the first female Doctor on ""Doctor Who"""
@@ -1120,24 +1120,24 @@ STARA,"___ Zagora, Bulgaria"
 RETIN,___-A
 MEUSE,___-Argonne offensive of W.W. I
 HANNA,___-Barbera (onetime cartoon company)
-BABYS,___-breath
+BABYS,Small children
 MYERS,___-Briggs Type Indicator (popular personality test)
 HURLY,___-burly
 INANY,___case
 PORTE,___-cochere (carriage entrance)
 SACRE,___-Coeur (Paris basilica)
-ARTSY,___-craftsy
+ARTSY,Describing a person with a creative flair
 RINKY,___-dink
 LOTUS,___-eater
 KISSY,___-face
-CALFS,___-foot jelly
+CALFS, Young bovine animals
 NEATS,___-foot oil
 TUTTI,___-frutti
 NUTRI,___-Grain (breakfast bar brand)
 NITTY,___-gritty
 SMOOT,___-Hawley Tariff Act of 1930
 HIDEY,___-hole
-RUSSO,___-Japanese War
+RUSSO,Brothers known for directing Marvel Movies
 FERDE,___-lance
 SONIN,___-law
 FRITO,___-Lay (corn chip maker)
@@ -1202,12 +1202,12 @@ SNEVA,1983 Indy winner Tom
 TILLY,"1985 Oscar nominee for ""Agnes of God"""
 ITINA,1986 celebrity autobiography
 FLOJO,"1988 Olympic track star, informally"
-BURBS,"1989 Tom Hanks black comedy, with ""The"""
+BURBS,Informal term for suburban residential areas
 OTERI,"1990s ""S.N.L."" cast member"
 NAFTA,1990s commerce pact
 IRVAN,1991 Daytona 500 winner Ernie
 STICH,1991 Wimbledon champ Michael
-VINNY,1992 Joe Pesci title role
+VINNY,Vincent's informal nickname
 SOFIE,1992 Liv Ullmann film
 COREY,1995 U.S. Open winner Pavin
 ANNAN,1997-2006 U.N. chief
@@ -1217,7 +1217,7 @@ EVENS,"2, 4, 6 and 8, but not 1, 3, 5 and 7"
 AZTEK,2001-05 Pontiac made in Mexico
 FRIDA,2002 Salma Hayek film or its title role
 HEYYA,2003 #1 Outkast hit
-OSAMA,2003 Afghani film that won a Golden Globe
+OSAMA,Terrorist behind 9/11
 GIGLI,2003 Bennifer bomb
 ENGLE,2003 Economics Nobelist Robert
 KERRY,2004 also-ran
@@ -1225,7 +1225,7 @@ SAWII,2005 horror sequel
 SAWIV,2007 horror sequel
 IOUSA,2008 documentary about the national debt
 MUNRO,2013 Literature Nobelist
-SELMA,2014 Ava DuVernay drama
+SELMA,City in Alabama known for its role in the Civil Rights Movement
 SOCHI,2014 Winter Olympics locale
 ONEAL,2016 inductee into the Basketball Hall of Fame
 GOTTI,2018 crime biopic
@@ -1253,16 +1253,16 @@ NEWDO,A cut above?
 PACES,A dueler may take 10 of them
 PHOTO,A filter might be used for one
 SIEVE,A fine mesh this is!
-APPLE,A giant one rises in Citi Field after every Mets homer
+APPLE,Forbidden fruit in a famous biblical story
 THUMB,A green one is helpful in a garden
 KORAN,A hafiz knows it by heart
-LIMAS,A hill of beans?
-HEAPS,A host
+LIMAS,Buttery green legumes
+HEAPS,A large quantity
 MCING,"A host of, in brief"
 CARAT,A little over three grains
 MILES,A long way
-LOADS,A lot
-MUCHO,A lot
+LOADS,A large quantity
+MUCHO,A lot (in Spanish)
 YEAHS,"A lot of the Beatles' ""She Loves You"""
 MICAH,A Minor Prophet
 LYRIC,A mondegreen is a misheard one
@@ -1300,12 +1300,12 @@ STYLI,Accessories for tablets
 BROOM,Accessory for a witch
 TIARA,Accessory for Wonder Woman
 VAUNT,Acclaim
-ROOKS,Accompaniers of knights
+ROOKS,Chess pieces that move in straight lines
 ORGAN,Accompaniment for many a hymn
 DIDIT,Accomplished the task
-HONDA,Accord maker
+HONDA,Accord's maker
 ASPER,According to
-LABOR,Accouchement
+LABOR,May Day celebration honoring workers
 PILED,"Accumulated, with ""up"""
 INURE,Accustom
 ENURE,Accustom (to)
@@ -2068,7 +2068,7 @@ VERNA,"Bloom who played Mary in ""The Last Temptation of Christ"""
 GAFFE,Blooper
 MIDDY,Blouse with a sailor collar
 AFUSE,Blow ___ (become enraged)
-RAGER,Blowout
+RAGER,"Wild party, in Gen Z slang"
 BAWLS,Blubbers
 FUNKS,Blue states
 YWCAS,Blue Triangle grps.
@@ -5588,7 +5588,7 @@ DUEBY,Library book words
 TITLE,"Library catalog listing after ""author"""
 BOITO,"Librettist for Verdi's ""Otello"" and ""Falstaff"""
 SIDRA,Libya's Gulf of ___
-ANISE,Licoricelike flavoring
+ANISE,Star ___ (spice)
 AMORT,"Lifeless, old-style"
 SKIER,Lift user
 ASAIR,Light ___
@@ -5767,8 +5767,8 @@ RABID,"Like sports fans who paint their faces, say"
 RAINY,Like stereotypical Seattle weather
 FURRY,Like stuffed animals
 TILED,"Like subway walls, often"
-ASIAN,Like sun bears and sloth bears
-GRAVE,"Like the accent in ""creme"""
+ASIAN,Person from the largest continent
+GRAVE,"___ Digger, from Monster Jam"
 TYPEO,Like the blood of a universal donor
 DORIC,Like the columns of the Lincoln Memorial
 GODLY,Like the devout
@@ -5877,7 +5877,7 @@ GINAS,Lollobrigida and others
 LAZES,Lolls (around)
 LOAFS,Lollygags
 RANGY,Long and lean
-HOMER,Long ball
+HOMER,Simpsons dad
 SOAKS,Long baths
 MAXIS,Long dresses
 NECKS,Long guitar parts
@@ -6294,9 +6294,9 @@ BALSA,"Model's makeup, often"
 ECIGS,"Modern health risks, for short"
 SKYPE,Modern kind of call
 CYBER,Modern lead-in to space or security
-INSTA,Modern pic
+INSTA,Social media platform known for photo sharing
 EFILE,Modern tax option
-AMISH,Modern-day horse-and-buggy users
+AMISH,Known for their simple lifestyle and rejection of new technology
 FRANZ,Modernist Kafka
 UTICA,Mohawk Valley city
 BEDEW,"Moisten, in a way"
@@ -6313,14 +6313,14 @@ LUCRE,"Money sometimes said to be ""filthy"""
 OUTGO,Money spent
 YURTS,Mongolian shelters
 NEWME,Moniker after a lifestyle change
-TUXES,Monkey suits
+TUXES,Formal attire for grooms and red carpet events
 DEEDS,Monopoly cards
 UTILS,Monopoly pair: Abbr.
-RENTS,Monopoly payments
+RENTS,"Basic services such as electricity, water, and gas"
 BANDO,Monopoly railroad
 ESSAI,Montaigne work
 PLATA,Montana motto word
-NINER,"Montana, e.g., informally"
+NINER,Fan of the San Francisco football team
 CLIFT,"Montgomery of ""The Young Lions"""
 JUNIO,Month after mayo
 CABLE,"Monthly cost, for many"
@@ -6350,7 +6350,7 @@ NEWER,More recent
 WRYER,More sardonic
 SORER,More teed off
 THUMP,More than a gentle tap
-WITCH,"More than a symptom, but less than a jerk"
+WITCH,Casts spells
 ABLER,More up to the task
 DIRER,More urgent
 BASER,More villainous
@@ -6364,20 +6364,20 @@ SNERD,"Mortimer ___, dummy of old radio and TV"
 TENON,Mortise's counterpart
 TILER,Mosaic maker
 REUEL,Moses' father-in-law
-POKED,Moseyed (along)
+POKED,Jabbed or nudged
 PESTS,Mosquitoes and gnats
 HORNS,Most big band instruments
-ALIST,"Most desirable, as guests"
+ALIST,Group of top-tier celebrities
 MODAL,"Most frequent, statistically"
-NOUNS,Most gerunds
+NOUNS,Parts of speech
 RARES,Most highly prized collectible coins
 PENNE,Mostaccioli relative
 BROOD,Mother hen's responsibility
 DANAE,Mother of Perseus
-MADRE,Mother: Sp.
+MADRE,"Spanish word for ""mother"""
 ROSES,Mother's Day delivery
-DROID,Motorola smartphone
-ADVIL,Motrin competitor
+DROID,"Fictional robotic companion in a galaxy far, far away"
+ADVIL,Over-the-counter pain reliever
 GETON,Mount
 URALS,Mountain chain that stretches from Kazakhstan to the Arctic
 PITON,Mountain climber's aid
@@ -6386,13 +6386,13 @@ OREAD,Mountain nymph
 ARETE,Mountain ridge
 LODGE,Mountain shelter
 ICEAX,Mountaineer's tool
-HUMPS,"Mountains, so to speak"
+HUMPS,Camels have one or two
 ROANS,Mounts with a little white on top?
 KNELL,Mournful sound
 CRAPE,Mourning band
 VOLES,Mouselike rodents
 ACERB,Mouth-puckering
-MOUSE,Move a cursor (over)
+MOUSE,Critter known for its ability to squeeze into tight spaces
 BUDGE,Move a little bit
 SLINK,Move clandestinely
 SIDLE,Move crabwise
@@ -6408,19 +6408,19 @@ PLODS,Moves like an elephant
 SEEPS,Moves like molasses
 FLITS,Moves quickly and lightly
 RELOS,"Moves, in slang"
-BLART,Movie mall cop
+BLART,Fictional mall cop
 FLICK,"Movie, informally"
 ZIPPY,Moving around fast
 ABLUR,Moving too quickly to be seen clearly
 FIXIT,Mr. ___ (handyman)
 ELTON,"Mr. ___, scheming socialite in ""Emma"""
-GOMEZ,"Mr. Addams of ""The Addams Family"""
+GOMEZ,Hispanic surname shared by singer Selena and actress Sofia
 DCCAB,Mr. T vehicle
-POTTS,"Mrs. ___, ""Beauty and the Beast"" character"
+POTTS,Last name of Tony Stark's loyal assistant
 NAINA,Mrs. Boris Yeltsin
 WILMA,Mrs. Flintstone
 DAVAO,"Mt. Apo's locale, in the Philippines"
-DILLS,Mt. Olive offerings
+DILLS,Pickled cucumbers
 DEIFY,Much more than respect
 WALLS,Much of a maze
 FORMS,Much paperwork
@@ -7884,16 +7884,16 @@ SAVOR,Relish
 SITBY,Remain idle
 LIEBY,Remain inactive
 RUINS,Remains
-CRYPT,Remains here?
-POKES,"Reminds, in a way"
-PAUSE,Remote button
+CRYPT,Hidden burial place associated with Ancient Egypt
+POKES,Light jabs or prods
+PAUSE,A remote button
 DEREG,"Removal of restrictions, informally"
-UNTAG,"Remove ID from, as a Facebook post"
+UNTAG,Remove mention from an Instagram post
 UNSEW,Remove stitches from
 UNPIN,"Remove, as a brooch"
-YANKS,"Removes from the mound, in baseball lingo"
-SKIMS,"Removes, as cream"
-PIERO,Renaissance artist ___ della Francesca
+YANKS,Americans from the northern United States (informal)
+SKIMS,Clothing brand launched by Kim Kardashian
+PIERO,"Italian artist who created the famous sculpture ""David"""
 DURER,Renaissance artist Albrecht
 RAMUS,Renaissance philosopher Petrus ___
 METUP,Rendezvoused (with)
@@ -10133,7 +10133,7 @@ FLIRT,What you might do on a first date
 DISCO,What you need some wiggle room to do?
 AGING,What you're doing at every moment
 XWORD,"What you're solving, informally"
-WHITE,What you're usually advised not to wear to someone's wedding
+WHITE,Walter ___ in Breaking Bad
 PHONE,"What's answered but never asks a question, in a riddle"
 TOERR,"What's human, they say"
 RESTE,"What's left, in Paris"
@@ -10193,7 +10193,7 @@ IHAVE,"Whitney Houston hit ""___ Nothing"""
 THINS,Whittles down
 MAVEN,Whiz
 SANTA,"Who actually lives in Lapland, some say"
-NIXON,"Who famously said ""I'm not a crook"""
+NIXON,37th President of USA
 AUDEN,"Who wrote ""In Memory of W. B. Yeats"""
 TWAIN,"Who wrote ""When in doubt, tell the truth"""
 FOODS,Whole ___
@@ -10217,7 +10217,7 @@ JADEN,Will Smith's actor son
 DAFOE,"Willem of the ""Spider-Man"" series"
 SHAWN,"William ___, editor of The New Yorker for 35 years"
 NAMES,"William and Mary, e.g."
-JESSE,"Williams of ""Grey's Anatomy"""
+JESSE,"Pinkman of ""Breaking Bad"""
 WONKA,Willy of children's literature
 BETTY,"Wilma's pal on ""The Flintstones"""
 ANOSE,Win by ___

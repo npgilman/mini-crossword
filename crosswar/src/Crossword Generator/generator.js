@@ -4,8 +4,8 @@
  */
 
 /// Libraries for CSV Parsing
-const fs = require("fs");
-const { parse } = require("csv-parse");
+import { parse } from "csv-parse";
+import * as fs from 'fs';
 
 
 /**
@@ -52,12 +52,13 @@ function getClues(wordsInGrid, wordsAndClues)
  */
 function createClueMapping()
 {
-    let clueMap = {};
+    let clueMap = new Map();
 
-    fs.createReadStream("./uniqueFives.csv")
+    /// TODO: Change to relative path. Breaking without absolute.
+    fs.createReadStream("C:\\Users\\twinb\\OneDrive\\Desktop\\misc\\wordle2\\crosswar\\src\\Crossword Generator\\uniqueFives.csv")
         .pipe(parse({ delimiter: ",", from_line: 2 }))
         .on("data", function (row) {
-            clueMap[row[0]] = row[1];
+            clueMap.set(row[0], row[1]);
         })
         .on("error", function (error) {
             console.log(error.message);
@@ -65,7 +66,11 @@ function createClueMapping()
         .on("end", function () {
             console.log("Clue CSV Parsed.");
         }); 
-
+    
+    
+    for (let [key, value] of clueMap) {
+        console.log(key + " = " + value);
+    }
     return clueMap;
 }
 
@@ -167,3 +172,5 @@ function checkWordBeginnings(wordBeginnings, words, grid)
 // testCluess = ["0","1","2","3","4","5","6","7","8","9"]
 // printClues(testCluess)
 // printGrid(["teste", "babae", "mamay", "float", "poopy"]);
+
+export { createClueMapping, getWords, getClues, printGrid, printClues };

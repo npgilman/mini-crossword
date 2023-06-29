@@ -1,6 +1,10 @@
 /**
  * File to contain the JS conversions of the parse.h and main.cpp file.
  * Currently a work in progress.
+ * 
+ * TODO: DOCUMENTATION
+ * CHECKWORDBEGINNINGS
+ * GENERATE_CROSSWORD
  */
 
 /// Libraries for CSV Parsing
@@ -102,57 +106,8 @@ function printGrid(grid)
     });
 }
 
-
-// bool checkWordBeginnings(unordered_map<string, bool>& wordBeginnings, const vector<string>& words, const string grid[5]) {
-//     /* load grid, putting the existing "word beginnings" into a vector */
-//     vector<string> begins = getWordsInGrid(grid);
-
-//     for (int i = 0; i < 10; i++) {
-//         auto it = wordBeginnings.find(begins[i]);
-//         // if this word beginning hasn't been mapped, map it
-//         if (it == wordBeginnings.end()) {
-//             bool beginningFound = false;
-//             // check if any words in the dataset have this beginning
-//             for (int j = 0; j < words.size(); j++) {
-//                 // if a word has the same beginning, set beginningFound to true and break loop
-//                 if (words[j][0] == begins[i][0]) {
-//                     if (begins[i][1] == '-') {
-//                         beginningFound = true;
-//                         break;
-//                     } else if (words[j][1] == begins[i][1]) {
-//                         if (begins[i][2] == '-') {
-//                             beginningFound = true;
-//                             break;
-//                         } else if (words[j][2] == begins[i][2]) {
-//                             if (begins[i][3] == '-') {
-//                                 beginningFound = true;
-//                                 break;
-//                             } else if (words[j][3] == begins[i][3]) {
-//                                 if (begins[i][4] == '-') {
-//                                     beginningFound = true;
-//                                     break;
-//                                 } else if (words[j][4] == begins[i][4]) {
-//                                     beginningFound = true;
-//                                     break;
-//                                 }
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//             // map this beginning accordingly
-//             wordBeginnings[begins[i]] = beginningFound;
-//         }
-//         // return false if this maps to false;
-//         if (!wordBeginnings[begins[i]]) {
-//             return false;
-//         }
-//     }
-//     return true;
-// }
-
 /**
- * 
+ *  TODO: COPY CJs DOCUMENTATION FROM ORIGINAL
  * @param {*} wordBeginnings 
  * @param {*} words 
  * @param {*} grid 
@@ -160,9 +115,42 @@ function printGrid(grid)
  */
 function checkWordBeginnings(wordBeginnings, words, grid)
 {
-    let begin = getWords(grid);
+    // should be an array
+    let beginnings = getWords(grid);
+    
+    // MAGIC CONSTANT 10
+    // REPLACE WITH SOMETHING BETTER
+    for (let i = 0; i < 10; i++)
+    {
+        if (wordBeginnings.includes(beginnings[i]))
+        {
+            let beginningFound = false;
+            // could refactor to words.forEach({lambda funct})
+            // staying consistent with CJ original design for now
+            for (let j = 0; j < words.size(); j++)
+            {
+                // MAGIC CONSTANT 5 BECAUSE WORD LENGTH IS 5
+                // REPLACE WITH words[j].length() OR SOMETHING EQUIVALENT
+                for (let k = 0; k < 5; k++)
+                {
+                    if (words[j][k] == begins[i][k])
+                    {
+                        if ((k == 4) || ((k+1 < 5) && begins[i][k+1] == '-'))
+                        {
+                            beginningFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            wordBeginnings[beginnings[i]] = beginningFound;
+        }
+        if (!wordBeginnings[beginnings[i]]) {
+            return false;
+        }
+    }
 
-    return false;
+    return true;
 }
 
 

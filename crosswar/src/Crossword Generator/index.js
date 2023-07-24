@@ -1,27 +1,33 @@
 
-import { createClueMapping, getWords, getClues, printGrid } from "./generator.js";
+import { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword} from "./generator.js";
 
-function main_func()
-{
-    // CREATE CLUE MAP CURRENTLY NOT WORKING. 
-    // PARSING BUT NOT STORING DATA
-    // ASSUME IT WORKS AND COME BACK TO FIX
-    let wordsAndClues = createClueMapping();
-    let words = wordsAndClues.keys();
+async function main_func() {
+    try {
+        // CREATE CLUE MAP CURRENTLY NOT WORKING. 
+        // PARSING BUT NOT STORING DATA
+        // ASSUME IT WORKS AND COME BACK TO FIX
+        let wordsAndClues = await createClueMapping();
+        let words = Array.from(wordsAndClues.keys());
+        console.log(words.length)
 
-    // temporary shuffling method
-    let shuffled = words.sort((a, b) => 0.5 - Math.random());
+        // temporary shuffling method
+        let shuffled = words.sort((a, b) => 0.5 - Math.random());
 
-    let grid = []
-    for (let i = 0; i < 5; i++) { grid.push("-----"); }
-    // TODO: FINISH BELOW FUNCTION
-    // generate_crossword(grid, shuffled);
+        let grid = []
+        for (let i = 0; i < 5; i++) { grid.push("-----"); }
+        
+        generateCrossword(grid, shuffled, 0, 0);
 
-    let answers = getWords(grid);
-    let clues = getClues(answers, wordsAndClues);
+        let answers = getWords(grid);
+        let clues = getClues(answers, wordsAndClues);
 
-    printGrid(grid);
-    printClues(clues);
+        printGrid(grid);
+        printClues(clues);
+        console.log(wordsAndClues.get("VELMA"));
+
+    } catch (error) {
+        console.error("Error while generating clues:", error);
+    }
 }
 
 main_func()

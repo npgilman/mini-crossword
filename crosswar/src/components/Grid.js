@@ -1,5 +1,9 @@
 import React, { useState, useRef } from 'react'
 
+let INCORRECT_CELL = "🟧"
+let EMPTY_CELL = "⬜"
+let CORRECT_CELL = "🟩"
+
 // answers as reflected in the status board
 let answers = [
     "abcde",
@@ -12,35 +16,41 @@ let answers = [
 export default function Grid() {
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill("")));
 const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // used for blue highlights (row or col)
-const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill("⬜")));
+const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
 
 // updates the status board when a cell change occurs (see handleCellChange)
-const handleStatusUpdate = (rowIndex, colIndex, value) => {
-    // create a copy of current status board
-    const updatedStatusBoard = [...statusBoard];
+const handleStatusUpdate = () => {
+    // iterate through grid, checking value of each cell against status board
+    var newStatusBoard = [...statusBoard];
 
-    // replace indicator of the changed cell accordingly
-    var newIndicator = "⬜";
-    switch (value) {
-      case "Backspace":
-        newIndicator = "⬜";
-        break;
-      case answers[rowIndex][colIndex-1]:
-        newIndicator = "🟩";
-        break;
-      case "":
-        newIndicator = "⬜";
-        break;
-      default:
-        newIndicator = "🟧";
-        break;
+    var numRows = grid.length;
+    var numColumns = grid[0].length;
+    let updateFound = false;
+
+    for (let i = 0; i < numRows; i++) {
+        for (let j = 0; j < numColumns; j++) {
+            // cell is incorrect but statusboard isn't up to date
+            if (grid[i][j] !== answers[i][j] && grid[i][j] !== "") {
+                //update statusboard and end loop
+                newStatusBoard[i][j] = INCORRECT_CELL
+            }
+
+            // cell is empty but statusboard isn't up to date
+            if (grid[i][j] === "") {
+                //update statusboard and end loop
+                newStatusBoard[i][j] = EMPTY_CELL
+            }
+
+            // cell is correct but statusboard isn't up to date
+            if (grid[i][j] === answers[i][j]) {
+                //update statusboard and end loop
+                newStatusBoard[i][j] = CORRECT_CELL
+            }
+        }
     }
-    // update status board with the new indicator
-    // !! believe that something here is causing the backspace error
-    updatedStatusBoard[rowIndex][colIndex-1] = newIndicator;
-    setStatusBoard(updatedStatusBoard)
+    setStatusBoard(newStatusBoard);
 };
 
 const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
@@ -121,6 +131,10 @@ const handleCellChange = (e, rowIndex, colIndex) => {
                     updatedGrid[rowIndex][colIndex] = e.target.value;
                     setGrid(updatedGrid)
 
+                    const updatedStatusBoard = [...statusBoard];
+                    updatedStatusBoard[rowIndex][colIndex] = "u"
+                    setStatusBoard(updatedStatusBoard);
+
                     // change selection
                     setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
                 }  
@@ -160,7 +174,7 @@ const handleCellChange = (e, rowIndex, colIndex) => {
             }  
         }
     }
-    handleStatusUpdate(rowIndex, colIndex, e.key);
+    handleStatusUpdate();
 };
 
 function backgroundColor(rowIndex, colIndex) { // cell color

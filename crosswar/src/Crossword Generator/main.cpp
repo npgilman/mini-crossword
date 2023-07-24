@@ -38,7 +38,6 @@ void printClues(vector<string> clues) {
     cout << "3. Down: " << clues[7] << endl;
     cout << "4. Down: " << clues[8] << endl;
     cout << "5. Down: " << clues[9] << endl;
-
 }
 
 void printGrid(const string grid[5]) {

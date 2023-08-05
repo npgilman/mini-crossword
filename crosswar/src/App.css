@@ -45,3 +45,69 @@
   font-size: 16px;
   letter-spacing: 0px;
 }
+
+#CrossNav {
+  top: 0;
+  left:0;
+  position:fixed;
+  background-color: #333;
+  width: 100%
+}
+
+#CrossNav ul {
+  left:40%;
+  text-align:center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 60%;
+}
+
+#CrossNav #WebsiteTitle {
+  left:0%;
+  text-align:center;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+#CrossNav #WebsiteTitle li {
+  float: left;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 36px;
+  text-decoration: none !important;
+}
+
+#CrossNav .clickable li a{
+  float: right;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 36px;
+  text-decoration: none !important;
+}
+
+#CrossNav .clickable a:hover:not(.active) {
+  transition: 0.4s;
+  background-color: #111;
+}
+
+#CrossNav .active {
+  background-color: #04AA6D;
+}
+
+a, a:hover, a:focus, a:active {
+  text-decoration: none;
+  color: inherit;
+}

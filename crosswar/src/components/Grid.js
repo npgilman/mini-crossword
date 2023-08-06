@@ -192,7 +192,7 @@ function backgroundColor(rowIndex, colIndex) { // cell color
   return (
     <>
     {/* Opponent's Status Board */}
-    <div className="opponent-grid">
+    {/* <div className="opponent-grid">
       {statusBoard.map((row, rowIndex) => (
         <div key={rowIndex}>
           {row.map((cell, colIndex) => (
@@ -203,7 +203,7 @@ function backgroundColor(rowIndex, colIndex) { // cell color
         </div>
       ))}
     </div>
-    <br></br>
+    <br></br> */}
     {/* Interactive Crossword Grid */}
     <div ref={crosswordRef}>
         {grid.map((row, rowIndex) => (

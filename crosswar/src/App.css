@@ -16,12 +16,12 @@
 
 /* single box where text is entered */
 .letter-box {
-  width: 32px;
-  height: 32px; 
+  width: 64px;
+  height: 64px; 
   margin: 1px;
   text-align: center;
   border: 2px solid transparent;
-  font-size: 32px;
+  font-size: 64px;
   text-transform: uppercase;
 }
 
@@ -110,4 +110,13 @@
 a, a:hover, a:focus, a:active {
   text-decoration: none;
   color: inherit;
+}
+
+table, td, th {
+  border: 1px solid;
+}
+
+table {
+  width: 98%;
+  border-collapse: collapse;
 }

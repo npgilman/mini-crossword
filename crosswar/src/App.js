@@ -1,6 +1,8 @@
 import './App.css';
 import CrosswarNav from './components/CrosswarNav.js';
 import Grid from './components/Grid.js';
+import Opponent from './components/Opponent.js';
+
 
 function App() {
   return (
@@ -10,21 +12,21 @@ function App() {
       <CrosswarNav />
       <table>
         <tr>
-          <td style={{width: "25%"}}>
-            <table>
+          <td style={{width: "20%"}}>
+            <table style={{width: "100%"}}>
               <tr>
-                <td>
-                  Player 1 
+                <td id="opponent1">
+                  Opponent 1 
                 </td>
               </tr>
               <tr>
-                <td>
-                  Player 2
+                <td id="opponent3">
+                  Opponent 3
                 </td>
               </tr>
             </table>
           </td>
-          <td style={{width: "50%"}}> 
+          <td style={{width: "60%"}}> 
             {/* ClueBar Goes Here */}
             Cluebar 
             <br></br>
@@ -32,7 +34,7 @@ function App() {
             {/* 'Grid' component contains the crossword grid and status board */}
             <Grid />
             <br></br>
-            <table style={{width: "100%"}}>
+            <table style={{width: "80%", marginLeft: "auto", marginRight: "auto" }}>
               <tr>
                 <td>
                   {/* Across Clues Go Here*/}
@@ -61,16 +63,16 @@ function App() {
               </tr>
             </table>
           </td>
-          <td style={{width: "25%"}}>
-            <table>
+          <td style={{width: "20%"}}>
+            <table style={{width: "100%"}}>
               <tr>
-                <td>
-                  Player 3
+                <td id="opponent2">
+                  Opponent 2
                 </td>
               </tr>
               <tr>
-                <td>
-                  Player 4
+                <td id="opponent4">
+                  Opponent 4
                 </td>
               </tr>
             </table>

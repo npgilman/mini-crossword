@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react'
+import Opponent from './Opponent.js'
+import ReactDOM from 'react-dom';
 
 let INCORRECT_CELL = "🟧"
 let EMPTY_CELL = "⬜"
@@ -189,6 +191,12 @@ function backgroundColor(rowIndex, colIndex) { // cell color
     }
 }
 
+/* This is used to render the Opponent's status board. It makes sure div exists before trying to render in it*/
+const [domReady, setDomReady] = React.useState(false)
+React.useEffect(() => {
+    setDomReady(true)
+}, [])
+
   return (
     <>
     {/* Opponent's Status Board */}
@@ -205,7 +213,7 @@ function backgroundColor(rowIndex, colIndex) { // cell color
     </div>
     <br></br> */}
     {/* Interactive Crossword Grid */}
-    <div ref={crosswordRef}>
+    <div ref={crosswordRef} style={{whiteSpace: "nowrap"}}>
         {grid.map((row, rowIndex) => (
             <div key={rowIndex}>
                 {row.map((cell, colIndex) => (
@@ -224,6 +232,20 @@ function backgroundColor(rowIndex, colIndex) { // cell color
             </div>
         ))}
     </div>
+
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent1'))
+    }
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent2'))
+    }
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent3'))
+    }
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent4'))
+    }
+
     </>    
   );
 }

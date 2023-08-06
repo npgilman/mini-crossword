@@ -16,12 +16,13 @@
 
 /* single box where text is entered */
 .letter-box {
-  width: 64px;
-  height: 64px; 
+  white-space: nowrap;
+  width: 72px;
+  height: 72px; 
   margin: 1px;
   text-align: center;
   border: 2px solid transparent;
-  font-size: 64px;
+  font-size: 72px;
   text-transform: uppercase;
 }
 
@@ -35,15 +36,21 @@
 
 /* parent element of status board*/
 .opponent-grid {
+  white-space: nowrap;
   display: inline-block;
   font-size: 0px;
+  padding: 10px;
+  margin:0;
+  line-height: 30px;
 }
 
 /* single row of status board */
 .opponent-row {
   display: inline-block;
-  font-size: 16px;
-  letter-spacing: 0px;
+  font-size: 40px;
+  letter-spacing: -10px;
+  padding:0%;
+  opacity:  0.9;
 }
 
 #CrossNav {
@@ -113,7 +120,7 @@ a, a:hover, a:focus, a:active {
 }
 
 table, td, th {
-  border: 1px solid;
+  border: 0px solid;
 }
 
 table {

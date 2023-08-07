@@ -58,6 +58,8 @@
   left:0;
   position:fixed;
   background-color: #333;
+  color: 
+  #e9e6d9;
   width: 100%;
   padding: 2px;
   border-bottom-left-radius: 15px;
@@ -66,7 +68,7 @@
 
 #CrossNav .clickable a{
   display: block;
-  color: white;
+  color: #e9e6d9;
   text-align: center;
   text-decoration: none !important;
 }
@@ -89,4 +91,34 @@ table, td, th {
 table {
   width: 98%;
   border-collapse: collapse;
+}
+
+@font-face {
+  font-family: "Kingthings";
+  src: url("fonts/kingthings-extortion.regular.ttf");
+}
+
+@font-face {
+  font-family: "RansomBlancoZero";
+  src: url("fonts/RansomBlancoZero.ttf");
+}
+
+@font-face {
+  font-family: "PaulsRansomNote";
+  src: url("fonts/PaulsRansomNote.ttf");
+}
+
+@font-face {
+  font-family: "KeplerStdBoldCaption";
+  src: url("fonts/KeplerStdBoldCaption.ttf");
+}
+
+@font-face {
+  font-family: "Shoplifter";
+  src: url("fonts/shoplifter.ttf");
+}
+
+@font-face {
+  font-family: "Chomsky";
+  src: url("fonts/chomsky.ttf");
 }

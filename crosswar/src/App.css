@@ -17,12 +17,12 @@
 /* single box where text is entered */
 .letter-box {
   white-space: nowrap;
-  width: 72px;
-  height: 72px; 
+  width: 7vh;
+  height: 7vh; 
   margin: 1px;
   text-align: center;
   border: 2px solid transparent;
-  font-size: 72px;
+  font-size: 7vh;
   text-transform: uppercase;
 }
 
@@ -39,16 +39,16 @@
   white-space: nowrap;
   display: inline-block;
   font-size: 0px;
-  padding: 10px;
+  padding: 1vh;
   margin:0;
-  line-height: 30px;
+  line-height: 3vh;
 }
 
 /* single row of status board */
 .opponent-row {
   display: inline-block;
-  font-size: 40px;
-  letter-spacing: -10px;
+  font-size: 5vh;
+  letter-spacing: -2vh;
   padding:0%;
   opacity:  0.9;
 }
@@ -58,50 +58,16 @@
   left:0;
   position:fixed;
   background-color: #333;
-  width: 100%
-}
-
-#CrossNav ul {
-  left:40%;
-  text-align:center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  position: fixed;
-  top: 0;
-  width: 60%;
-}
-
-#CrossNav #WebsiteTitle {
-  left:0%;
-  text-align:center;
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: #333;
-  position: fixed;
-  top: 0;
   width: 100%;
+  padding: 2px;
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
 }
 
-#CrossNav #WebsiteTitle li {
-  float: left;
+#CrossNav .clickable a{
   display: block;
   color: white;
   text-align: center;
-  padding: 14px 36px;
-  text-decoration: none !important;
-}
-
-#CrossNav .clickable li a{
-  float: right;
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 14px 36px;
   text-decoration: none !important;
 }
 
@@ -110,9 +76,6 @@
   background-color: #111;
 }
 
-#CrossNav .active {
-  background-color: #04AA6D;
-}
 
 a, a:hover, a:focus, a:active {
   text-decoration: none;

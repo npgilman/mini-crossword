@@ -10,7 +10,7 @@ function App() {
       <header className="App-header">
         {/* 'CrosswarNav' component contains the navbar */}
       <CrosswarNav />
-      <table>
+      <table >
         <tr>
           <td style={{width: "20%"}}>
             <table style={{width: "100%"}}>
@@ -34,33 +34,9 @@ function App() {
             {/* 'Grid' component contains the crossword grid and status board */}
             <Grid />
             <br></br>
-            <table style={{width: "80%", marginLeft: "auto", marginRight: "auto" }}>
-              <tr>
-                <td>
-                  {/* Across Clues Go Here*/}
-                  Across
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                  <br>
-                  </br>
-                </td>
-                <td>
-                  {/* Down Clues Go Here */}
-                  Down
-                </td>
-              </tr>
+            <table style={{width: "99%", marginLeft: "auto", marginRight: "auto", border: "none"}} id="cluebox">
+              {/* Clues Go Here */}
+
             </table>
           </td>
           <td style={{width: "20%"}}>

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Opponent from './Opponent.js'
+import Clues from './Clues.js'
 import ReactDOM from 'react-dom';
 
 let INCORRECT_CELL = "🟧"
@@ -19,6 +20,10 @@ export default function Grid() {
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill("")));
 const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // used for blue highlights (row or col)
 const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
+
+const [acrossCluesArray, setAcrossCluesArray] = useState(Array(5).fill("across across across across across across across across")); // across clues
+const [downCluesArray, setDownCluesArray] = useState(Array(5).fill("down down down down down down down down down down down down down")); // down clues
+const [selectedClue, setSelectedClue] = useState(0);
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
 
@@ -55,6 +60,10 @@ const handleStatusUpdate = () => {
     setStatusBoard(newStatusBoard);
 };
 
+const handleClueClick = (e, rowIndex, colIndex) => {
+    // if user clicks a clue, focus on that row/col on the grid
+}
+
 const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
     // make cursor go to end of the string :P
     const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
@@ -66,20 +75,25 @@ const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
     if (selection.row === rowIndex && selection.col === -1 && selection.cell[0] === rowIndex && selection.cell[1] === colIndex) {
         // If the same cell is already selected, switch to highlighting column
         setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
+        setSelectedClue(colIndex+"d");
     }
     else if (selection.row === -1 && selection.col === colIndex && selection.cell[0] === rowIndex && selection.cell[1] === colIndex) {
-        // If the same cell is already selected, switch to highlighting column
+        // If the same cell is already selected, switch to highlighting row
         setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+        setSelectedClue(rowIndex+"a");
     }
     else if (selection.col === -1) {
         setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+        setSelectedClue(rowIndex+"a");
     }
     else if (selection.row === -1) {
         setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
+        setSelectedClue(colIndex+"d");
     }
     else {
         // Highlight the selected row
         setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+        setSelectedClue(rowIndex+"a");
     }
 };
 
@@ -245,6 +259,11 @@ React.useEffect(() => {
     {(domReady == true) &&
             ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent4'))
     }
+
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue}/>, document.getElementById('cluebox'))
+    }
+
 
     </>    
   );

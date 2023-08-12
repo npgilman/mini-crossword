@@ -122,3 +122,56 @@ table {
   font-family: "Chomsky";
   src: url("fonts/chomsky.ttf");
 }
+
+#cluebox {
+  position: relative;
+  vertical-align: top;
+}
+
+#cluebox hr {
+  width: 70%;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border: 1px solid black;
+}
+
+.clue {
+  text-align: left;
+  font-size: 2.25vh;
+  padding: 0.5vh;
+  border-radius: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.clue:hover {
+  transition: 0.3s;
+  background-color: #cfcbbe;
+}
+
+.clue:not(:hover) {
+  transition: 0.3s;
+}
+
+.highlight {
+  background-color: #a7d8fd;
+}
+
+#Across {
+  font-family: "KeplerStdBoldCaption";
+  border-radius: 10px;
+  background-color: #e9e6d9;
+  color: #111;
+  padding: 2vh;
+  letter-spacing: -0.03vh;
+  line-height: 2vh;
+}
+#Down {
+  font-family: "KeplerStdBoldCaption";
+  border-radius: 10px;
+  background-color: #e9e6d9;
+  color: #111;
+  padding: 2vh;
+  letter-spacing: -0.03vh;
+  line-height: 2vh;
+}

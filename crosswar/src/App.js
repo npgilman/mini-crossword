@@ -27,9 +27,9 @@ function App() {
             </table>
           </td>
           <td style={{width: "60%"}}> 
-            {/* ClueBar Goes Here */}
-            Cluebar 
-            <br></br>
+            {/* ClueBar Goes Here */} 
+            <div id='cluebar'>
+            </div>
             <br></br>
             {/* 'Grid' component contains the crossword grid and status board */}
             <Grid />

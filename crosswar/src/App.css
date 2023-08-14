@@ -114,6 +114,11 @@ table {
 }
 
 @font-face {
+  font-family: "KeplerStdRegular";
+  src: url("fonts/KeplerStdRegular.ttf");
+}
+
+@font-face {
   font-family: "Shoplifter";
   src: url("fonts/shoplifter.ttf");
 }
@@ -136,6 +141,7 @@ table {
 }
 
 .clue {
+  font-family: "KeplerStdRegular";
   text-align: left;
   font-size: 2.25vh;
   padding: 0.5vh;
@@ -147,6 +153,10 @@ table {
 .clue:hover {
   transition: 0.3s;
   background-color: #cfcbbe;
+}
+
+.highlight:hover{
+  background-color: #83c7fa;
 }
 
 .clue:not(:hover) {
@@ -174,4 +184,16 @@ table {
   padding: 2vh;
   letter-spacing: -0.03vh;
   line-height: 2vh;
+}
+
+
+#cluebar {
+  font-family: "KeplerStdBoldCaption";
+  color: #111;
+  background-color: #e9e6d9;
+  height: 4vh;
+  border-radius: 15px;
+  text-align: left;
+  margin-left: 5vh;
+  margin-right: 5vh;
 }

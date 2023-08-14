@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react'
 import Opponent from './Opponent.js'
 import Clues from './Clues.js'
 import ReactDOM from 'react-dom';
+import Cluebar from './Cluebar.js';
 
 let INCORRECT_CELL = "🟧"
 let EMPTY_CELL = "⬜"
@@ -309,6 +310,9 @@ React.useEffect(() => {
             ReactDOM.createPortal(<Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebox'))
     }
 
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebar'))
+    }
 
     </>    
   );

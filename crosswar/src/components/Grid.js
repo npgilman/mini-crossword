@@ -60,8 +60,53 @@ const handleStatusUpdate = () => {
     setStatusBoard(newStatusBoard);
 };
 
-const handleClueClick = (e, rowIndex, colIndex) => {
-    // if user clicks a clue, focus on that row/col on the grid
+function handleClueClick(e, clueType, clueNumber) { 
+    // If user clicks a clue, focus on that row/col on the grid
+    // Parameters:
+    // e: event (click), clueType: across "a" or down "d", clueNumber: the number of the clue 0-4
+    console.log(clueNumber);
+
+    // Check clueType to see if it is an across or down clue
+    if (clueType == "a") {
+
+        let colIndex = 0;
+        for(let i = 0; i < 5; i++) { // this loop finds the first empty cell in the clue row. We will use this to select the first empty cell to type next in.
+            if (statusBoard[clueNumber][i] != EMPTY_CELL) {
+                colIndex++;
+            }
+            else {
+                break;
+            }
+            if(colIndex == 5) { // if row is full, highlight start
+                colIndex = 0;
+            }
+        }
+
+        setSelection({row: clueNumber, col: -1, cell: [clueNumber, colIndex]}); // highlight row
+        setSelectedClue(clueNumber+"a"); // highlight selected clue
+        const cell = crosswordRef.current.querySelector('#cell' + clueNumber + '-' + colIndex +'');
+        cell.focus(); // focus on cell to be able to write in the cell
+    }
+    else {
+
+        let rowIndex = 0;
+        for(let i = 0; i < 5; i++) { // this loop finds the first empty cell in the clue column. We will use this to select the first empty cell to type next in.
+            if (statusBoard[i][clueNumber] != EMPTY_CELL) {
+                rowIndex++;
+            }
+            else {
+                break;
+            }
+            if(rowIndex == 5) { // if column is full, highlight start
+                rowIndex = 0;
+            }
+        }
+
+        setSelection({row: -1, col: clueNumber, cell: [rowIndex, clueNumber]}); // highlight column
+        setSelectedClue(clueNumber+"d"); // highlight selected clue
+        const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + clueNumber +'');
+        cell.focus(); // focus on cell to be able to write in the cell
+    }
 }
 
 const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
@@ -261,7 +306,7 @@ React.useEffect(() => {
     }
 
     {(domReady == true) &&
-            ReactDOM.createPortal(<Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue}/>, document.getElementById('cluebox'))
+            ReactDOM.createPortal(<Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebox'))
     }
 
 

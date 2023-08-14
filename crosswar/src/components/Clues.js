@@ -1,4 +1,5 @@
 import React from 'react'
+import Grid from './Grid.js';
 
 const Clues = (props) => {
     const acrossCluesArray = Array.from(props.across);
@@ -8,6 +9,10 @@ const Clues = (props) => {
     // const rowIndex = props.rowIndex;
 
     console.log(highlight);
+
+    function handleClueClick(e, type, index) {
+        props.handleClueClick(e, type, index);
+    }
 
   return (
     <>
@@ -19,6 +24,7 @@ const Clues = (props) => {
                 {acrossCluesArray.map((row, index) => (
                     <div 
                         className={highlight === (index + "a") ? 'clue highlight' : 'clue'}
+                        onClick={(e) => handleClueClick(e, "a", index)}
                     >
                         {index + 1}. {acrossCluesArray[index]}
                     </div>
@@ -32,6 +38,7 @@ const Clues = (props) => {
                 {downCluesArray.map((row, index) => (
                     <div 
                         className={highlight === (index + "d") ? 'clue highlight' : 'clue'}
+                        onClick={(e) => handleClueClick(e, "d", index)}
                     >
                         {index + 1}. {downCluesArray[index]}
                     </div>

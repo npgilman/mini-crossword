@@ -16,7 +16,7 @@ function App() {
             <table style={{width: "100%"}}>
               <tr>
                 <td id="opponent1">
-                  Opponent 1 
+                  Opponent 1
                 </td>
               </tr>
               <tr>

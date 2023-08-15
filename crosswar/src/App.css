@@ -5,6 +5,8 @@
 /* default react styling */
 .App-header {
   background-color: #282c34;
+  /* background-image: url("testbg.jpg");
+  background-size: 250vh; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -19,9 +21,9 @@
   white-space: nowrap;
   width: 7vh;
   height: 7vh; 
-  margin: 1px;
+  margin: 0px;
   text-align: center;
-  border: 2px solid transparent;
+  border: 1px solid black;
   font-size: 7vh;
   text-transform: uppercase;
 }
@@ -31,7 +33,7 @@
   background-color: #ffda37;
   caret-color: transparent;
   outline: none;
-  border: 2px solid transparent; 
+  border: 1px solid black; 
 }
 
 /* parent element of status board*/

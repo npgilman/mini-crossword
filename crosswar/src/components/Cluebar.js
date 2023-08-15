@@ -49,20 +49,23 @@ const Cluebar = (props) => {
 
     return(
         <>
-        <table>
+        <table style={{cursor: "default"}}>
             <tr>
                 <td style={{width: "6%", borderRight: "1px solid black"}}>
                     <div style={{marginLeft: "1vh", textTransform: "uppercase"}}>
+                        {/* Selected clue's number and type (across or down), ex: "1A" */}
                         {getSelected()}
                     </div>
                 </td>
                 <td style={{fontFamily: "KeplerStdRegular", width: "88%", borderRight: "1px solid black"}}>
                     <div style={{marginLeft: "1vh", fontSize: "2.2vh"}}>
+                        {/* Selected clue */}
                         {getClue()}
                     </div>
                 </td>
                 <td style={{width: "6%", textAlign: "right"}}>
                     <div style={{textAlign: "left", marginLeft: "1vh"}}>
+                        {/* Time elapsed in minutes:seconds */}
                     {Math.floor((time/60000) % 60)}:{("0" + Math.floor((time/1000) % 60).toString()).slice(-2)}
                     </div>
                 </td>

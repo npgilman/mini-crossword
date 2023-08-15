@@ -151,6 +151,7 @@ table {
 }
 
 .clue:hover {
+  cursor: pointer;
   transition: 0.3s;
   background-color: #cfcbbe;
 }

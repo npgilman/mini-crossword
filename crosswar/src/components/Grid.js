@@ -294,26 +294,24 @@ React.useEffect(() => {
     </div>
 
     {(domReady == true) &&
+            ReactDOM.createPortal(<Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebox'))
+    }
+    {(domReady == true) &&
+            ReactDOM.createPortal(<Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebar'))
+    }
+    
+    {(domReady == true) &&
             ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent1'))
     }
     {(domReady == true) &&
-            ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent2'))
-    }
+          ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent2'))
+    }  
     {(domReady == true) &&
             ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent3'))
     }
     {(domReady == true) &&
             ReactDOM.createPortal(<Opponent data={statusBoard}/>, document.getElementById('opponent4'))
     }
-
-    {(domReady == true) &&
-            ReactDOM.createPortal(<Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebox'))
-    }
-
-    {(domReady == true) &&
-            ReactDOM.createPortal(<Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>, document.getElementById('cluebar'))
-    }
-
     </>    
   );
 }

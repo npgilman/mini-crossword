@@ -49,15 +49,15 @@ const Cluebar = (props) => {
 
     return(
         <>
-        <table style={{cursor: "default"}}>
+        <table style={{cursor: "default", padding: 0}}>
             <tr>
-                <td style={{width: "6%", borderRight: "1px solid black"}}>
+                <td style={{width: "6%", borderRight: "1px solid black", backgroundColor: "#83c7fa", borderTopLeftRadius: "6px", borderBottomLeftRadius: "6px"}}>
                     <div style={{marginLeft: "1vh", textTransform: "uppercase"}}>
                         {/* Selected clue's number and type (across or down), ex: "1A" */}
                         {getSelected()}
                     </div>
                 </td>
-                <td style={{fontFamily: "KeplerStdRegular", width: "88%", borderRight: "1px solid black"}}>
+                <td style={{fontFamily: "KeplerStdRegular", width: "88%", borderRight: "1px solid black", background: "linear-gradient(to left, rgba(255,255,255,0), rgba(167, 216, 253, 0.4) , #a7d8fd)"}}>
                     <div style={{marginLeft: "1vh", fontSize: "2.2vh"}}>
                         {/* Selected clue */}
                         {getClue()}

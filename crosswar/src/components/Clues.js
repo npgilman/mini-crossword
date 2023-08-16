@@ -16,8 +16,8 @@ const Clues = (props) => {
 
   return (
     <>
-    <tr>
-        <td style={{width : "50%", verticalAlign: "top", border: "none"}}>
+    <tr style={{height: "100%"}}>
+        <td style={{width : "50%", verticalAlign: "top", border: "none", height: "1vh", overflowY: "scroll"}}>
             <div id="Across" style={{marginBottom: "0px"}}>
                 {/* Across Clues */}
                 Across <hr></hr>
@@ -31,7 +31,7 @@ const Clues = (props) => {
                 ))}
             </div>
         </td>
-        <td style={{width : "50%", height: "100%", verticalAlign: "top", border: "none"}}>
+        <td style={{width : "50%", height: "100%", verticalAlign: "top", border: "none", height: "1vh", overflowY: "scroll"}}>
             <div id="Down" style={{height: "100%",}}>
                 {/* Down Clues */}
                 Down <hr></hr>

@@ -5,11 +5,13 @@ function Homescreen(props) {
     const [playGameSelected, setPlayGameSelected] = useState(false);
 
     const joinRoom = () => {
+        console.log("test1")
         if(props.username !== "" && props.room !== "") { // if username and room are not empty
-
+            console.log("test2")
             const userData = {
                 username: props.username,
-                room: props.room
+                room: props.room,
+                id: props.socket.id
             }
 
             props.socket.emit("join_room", userData); // tell server to join user to room, sends a variable with entered username and room to server
@@ -108,6 +110,7 @@ function Homescreen(props) {
                                     onChange={(event) => {
                                         props.setRoom(event.target.value);
                                     }}
+                                    onKeyDownCapture={(event) => event.key === "Enter" && joinRoom()}
                                 />
                                 </td>
                             </tr>

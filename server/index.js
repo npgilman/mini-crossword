@@ -26,13 +26,14 @@ io.on("connection", (socket) => {
         const userInfo = {
             username: data.username,
             room: data.room,
-            id: socket.id
+            id: data.id
         }
 
         socket.to(data.room).emit("announce_player", userInfo); // tell users in room someone has joined
     });
 
-    socket.on("send_name", (data) => {
+    socket.on("send_name", async (data) => {
+        console.log(data.fromUsername + " just sent their name.")
         socket.to(data.room).emit("receive_name", data);
     });
 

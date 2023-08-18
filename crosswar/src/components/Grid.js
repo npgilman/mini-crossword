@@ -34,6 +34,8 @@ const[numOpponents, setNumOpponents] = useState(0);
 const[opponent1Name, setOpponent1Name] = useState("Opponent 1");
 const[opponent1Status, setOpponent1Status] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
 
+const[opponentArr, setOpponentArr] = useState([]);
+
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
 
@@ -72,8 +74,8 @@ const handleStatusUpdate = () => {
     // emit status board to server
 
     const data = {
-        board: newStatusBoard,
         room: props.room,
+        board: newStatusBoard,
         id: props.socket.id
     }
 
@@ -271,37 +273,94 @@ function backgroundColor(rowIndex, colIndex) { // cell color
 }
 
 useEffect(() => {
-    props.socket.on("announce_player", (data) => {
-        console.log(data.username + " has joined the room!");
+    props.socket.on("announce_player", (data) => { // Called when a new opponent joins the room
+        console.log(data.username + " and id " + data.id + " has joined the room!");
 
-        setOpponent1Name(data.username);
+        // Add player to opponent array
+        setOpponentArr(             // replace the state,
+            [                       // with a new array,
+                ...opponentArr,     // that has all of the old opponents,
+                {                   // and the new opponent at the end.
+                    id: data.id,
+                    username: data.username,
+                    statusBoard: Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL))
+                }
+            ]            
+        );
 
+        const oppList = opponentArr;
+        oppList.push({
+            id: props.socket.id,
+            username: props.username,
+            statusBoard: statusBoard
+        })
+        console.log("Opp List:");
+        console.log(oppList);
+
+        // Send user data to server
+        // This data will be used to tell the new player who else is in the room
         const dataToSend = {
-            toId: data.id,
+            toId: data.id, // will be used to tell which user will use this data
+            fromId: props.socket.id,
             fromUsername: props.username,
-            room: data.room
+            room: data.room,
+            oppList: oppList
         }
 
-        props.socket.emit("send_name", dataToSend);
-
+        props.socket.emit("send_name", dataToSend); // Send user to data to server
     });
     
 
-    props.socket.on("receive_name", (data) => {
-        if(data.toId == props.socket.id) {
-            setOpponent1Name(data.fromUsername);
+    props.socket.on("receive_name", (data) => { // Lets a player who just joined the room see who else is already in the room
+        console.log(data);
+        if (data.toId == props.socket.id) {
+            setOpponentArr(data.oppList);
+        }
+        // console.log( data.fromUsername+" just sent their name");
+        
+        // let alreadySent = false;
+        // opponentArr.map((opponent) => {
+        //     if (opponent.id = data.fromId) {
+        //         alreadySent = true;
+        //     }
+        // });
+
+        // if(data.toId == props.socket.id && !alreadySent) { // makes sure that only the new user is using the data
+        //     // Add player to opponent array
+        //     setOpponentArr(             // replace the state,
+        //         [                       // with a new array,
+        //             ...opponentArr,     // that has all of the old opponents,
+        //             {                   // and the new opponent at the end.
+        //                 id: data.fromId,
+        //                 username: data.fromUsername,
+        //                 statusBoard: Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL))
+        //             }
+        //         ]            
+        //     );
+
+        //     console.log("this is the new opponent array");
+        //     console.log(opponentArr);
+        // }
+    });
+
+    props.socket.on("receive_board", (data) => { // Called when an opponent types something in their board
+        if(data.id != props.socket.id) { // Only update if user is not the player who made the change
+            setOpponentArr(opponentArr.map((opponent) => { // Replace the state
+                if(opponent.id === data.id) {
+                    return { ...opponent, statusBoard: data.board }; // change the board variable if ids match
+                }
+                else {
+                    return opponent; // return unchanged opponent object if ids don't match
+                }
+            }));
         }
     });
 
-    props.socket.on("receive_board", (data) => {
-        if(data.id != props.socket.id) {
-            setOpponent1Status(data.board);
-        }
-    });
+
     // return () => props.socket.on("announce_player");
     // return () =>props.socket.on("receive_player");
 
-}, [props.socket]);
+}, [props.socket, opponentArr]);
 
 /* This is used to render the Opponent's status board. It makes sure div exists before trying to render in it*/
 const [domReady, setDomReady] = React.useState(false)
@@ -326,6 +385,7 @@ React.useEffect(() => {
                                     <div key={rowIndex}>
                                         {row.map((cell, colIndex) => (
                                             <input className="letter-box"
+                                            autoComplete='off'
                                             key={colIndex}
                                             id={"cell"+rowIndex+"-"+colIndex}
                                             value={cell}
@@ -358,36 +418,87 @@ React.useEffect(() => {
                 <td style={{width: "25%", fontFamily: "Serif"}}>
                     <div class="papers" style={{transform: "rotateZ(6deg) translateY(-1em) translateX(-2em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-20px"}}/> 
-                    {opponent1Name}
-                    <div id="opponent1">
-                        <Opponent data={opponent1Status}/>
-                    </div>
+                        {console.log(opponentArr)}
+                        {
+                            opponentArr.length >= 1 ? (
+                                opponentArr[0].username
+                            ) : (
+                                "Waiting for players..."
+                            )
+                        }
+                        <div id="opponent1">
+                        {
+                            opponentArr.length >= 1 ? (
+                                <Opponent data={opponentArr[0].statusBoard}/>
+                            ) : (
+                                ""
+                            )
+                        }
+                        
+                        </div>
                     </div>
                 </td >
-                <td style={{width: "25%", fontFamily: "RansomBlancoZero"} }>
+                <td style={{width: "25%", fontFamily: "Serif"} }>
                     <div class="papers" style={{transform: "rotateZ(-5deg) translateY(0.5em) translateX(-0.5em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "20px", filter: "hue-rotate(100deg)"}}/> 
-                    Opponent 2
-                    <div id="opponent2">
-                        {/* <Opponent data={statusBoard}/> */}
-                    </div>
+                        {
+                            opponentArr.length >= 2 ? (
+                                opponentArr[1].username
+                            ) : (
+                                "Waiting for players..."
+                            )
+                        }
+                        <div id="opponent2">
+                        {
+                            opponentArr.length >= 2 ? (
+                                <Opponent data={opponentArr[1].statusBoard}/>
+                            ) : (
+                                ""
+                            )
+                        }
+                        </div>
                     </div>
                 </td>
                 <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
                     <div class="papers" style={{transform: "rotateZ(7deg) translateY(-0.5em) translateX(1em)"}}>
-                    Opponent 3<img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "20px", filter: "hue-rotate(210deg)"}}/> 
+                    {
+                        opponentArr.length >= 3 ? (
+                            opponentArr[2].username
+                        ) : (
+                            "Waiting for players..."
+                        )
+                    }
+                    <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "20px", filter: "hue-rotate(210deg)"}}/> 
                     <div id="opponent3">
-                        {/* <Opponent data={statusBoard}/> */}
+                        {
+                            opponentArr.length >= 3 ? (
+                                <Opponent data={opponentArr[2].statusBoard}/>
+                            ) : (
+                                ""
+                            )
+                        }
                     </div>
                     </div>
                 </td>
                 <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
                     <div class="papers" style={{transform: "rotateZ(-5deg) translateY(0.9em) translateX(1.5em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-50px" , filter: "hue-rotate(290deg)"}}/> 
-                    Opponent 4
+                    {
+                        opponentArr.length >= 4 ? (
+                            opponentArr[3].username
+                        ) : (
+                            "Waiting for players..."
+                        )
+                    }
                     
                     <div id="opponent4">
-                        {/* <Opponent data={statusBoard}/> */}
+                        {
+                            opponentArr.length >= 4 ? (
+                                <Opponent data={opponentArr[3].statusBoard}/>
+                            ) : (
+                                ""
+                            )
+                        }
                     </div>
                     </div>
                 </td>

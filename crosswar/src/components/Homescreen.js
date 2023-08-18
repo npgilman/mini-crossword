@@ -2,8 +2,22 @@ import React from 'react'
 import { useState } from 'react'
 
 function Homescreen(props) {
-
     const [playGameSelected, setPlayGameSelected] = useState(false);
+
+    const joinRoom = () => {
+        if(props.username !== "" && props.room !== "") { // if username and room are not empty
+
+            const userData = {
+                username: props.username,
+                room: props.room
+            }
+
+            props.socket.emit("join_room", userData); // tell server to join user to room, sends a variable with entered username and room to server
+
+
+            props.startGame(true); // change to game screen
+        }
+    }
 
 
   return (
@@ -17,7 +31,7 @@ function Homescreen(props) {
                     style={{marginTop: "3%", marginLeft:"8%", marginRight:"8%", marginBottom: "auto", fontSize: "5vw", fontFamily: "KeplerStdBoldCaption", textAlign: "left"}}
                     onClick={(event) => {
                         setPlayGameSelected(true);
-
+                        props.setRoom("");
                     }}>
                     ✏️ Play Game
                 </div>
@@ -51,6 +65,8 @@ function Homescreen(props) {
                                 <td>
                                 <input 
                                     type='text'
+                                    maxLength="20"
+                                    placeholder={props.username}
                                     style={{  
                                         border: "none",
                                         fontSize: "3vw",
@@ -63,6 +79,9 @@ function Homescreen(props) {
                                         backgroundColor: "rgba(255,255,255,0)",
                                         fontFamily: "KeplerStdRegular"
                                     }}
+                                    onChange={(event) => {
+                                        props.setUsername(event.target.value);
+                                    }}
                                 />
                                 </td>
                             </tr>
@@ -73,6 +92,7 @@ function Homescreen(props) {
                                 <td>
                                 <input 
                                     type='text'
+                                    maxLength="10"
                                     style={{  
                                         border: "none",
                                         fontSize: "3vw",
@@ -83,7 +103,10 @@ function Homescreen(props) {
                                         margin: "0px 0",
                                         boxSizing: "border-box",
                                         backgroundColor: "rgba(255,255,255,0)",
-                                        fontFamily: "KeplerStdRegular"
+                                        fontFamily: "KeplerStdRegular",
+                                    }}
+                                    onChange={(event) => {
+                                        props.setRoom(event.target.value);
                                     }}
                                 />
                                 </td>
@@ -92,9 +115,7 @@ function Homescreen(props) {
                         <div 
                             id="button-1" 
                             style={{marginTop: "2%", marginLeft:"25%", marginRight:"25%", marginBottom: "auto", fontSize: "3vw", fontFamily: "KeplerStdBoldCaption", textAlign: "center"}}
-                            onClick={(event) => {
-                                props.startGame(true);
-                            }}
+                            onClick={joinRoom}
                         >
                             ⚔️ Join Game
                         </div>

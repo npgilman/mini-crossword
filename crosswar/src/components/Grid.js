@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import Opponent from './Opponent.js'
 import Clues from './Clues.js'
 import ReactDOM from 'react-dom';
@@ -17,14 +17,23 @@ let answers = [
     "uvwxy",
 ]
 
-export default function Grid() {
+export default function Grid(props) {
+
+// grid variables
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill("")));
 const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // used for blue highlights (row or col)
 const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
 
+// clue variables
 const [acrossCluesArray, setAcrossCluesArray] = useState(Array(5).fill("across across across across across across across across")); // across clues
 const [downCluesArray, setDownCluesArray] = useState(Array(5).fill("down down down down down down down down down down down down down")); // down clues
 const [selectedClue, setSelectedClue] = useState(0);
+
+// opponnent variables
+const[numOpponents, setNumOpponents] = useState(0);
+const[opponent1Name, setOpponent1Name] = useState("Opponent 1");
+const[opponent1Status, setOpponent1Status] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
+
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
 
@@ -59,6 +68,16 @@ const handleStatusUpdate = () => {
         }
     }
     setStatusBoard(newStatusBoard);
+
+    // emit status board to server
+
+    const data = {
+        board: newStatusBoard,
+        room: props.room,
+        id: props.socket.id
+    }
+
+    props.socket.emit("send_board", data);
 };
 
 function handleClueClick(e, clueType, clueNumber) { 
@@ -251,6 +270,39 @@ function backgroundColor(rowIndex, colIndex) { // cell color
     }
 }
 
+useEffect(() => {
+    props.socket.on("announce_player", (data) => {
+        console.log(data.username + " has joined the room!");
+
+        setOpponent1Name(data.username);
+
+        const dataToSend = {
+            toId: data.id,
+            fromUsername: props.username,
+            room: data.room
+        }
+
+        props.socket.emit("send_name", dataToSend);
+
+    });
+    
+
+    props.socket.on("receive_name", (data) => {
+        if(data.toId == props.socket.id) {
+            setOpponent1Name(data.fromUsername);
+        }
+    });
+
+    props.socket.on("receive_board", (data) => {
+        if(data.id != props.socket.id) {
+            setOpponent1Status(data.board);
+        }
+    });
+    // return () => props.socket.on("announce_player");
+    // return () =>props.socket.on("receive_player");
+
+}, [props.socket]);
+
 /* This is used to render the Opponent's status board. It makes sure div exists before trying to render in it*/
 const [domReady, setDomReady] = React.useState(false)
 React.useEffect(() => {
@@ -303,12 +355,12 @@ React.useEffect(() => {
 
         <table style={{color: "black"}}>
             <tr>
-                <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
+                <td style={{width: "25%", fontFamily: "Serif"}}>
                     <div class="papers" style={{transform: "rotateZ(6deg) translateY(-1em) translateX(-2em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-20px"}}/> 
-                    Opponent 1
+                    {opponent1Name}
                     <div id="opponent1">
-                        <Opponent data={statusBoard}/>
+                        <Opponent data={opponent1Status}/>
                     </div>
                     </div>
                 </td >
@@ -317,7 +369,7 @@ React.useEffect(() => {
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "20px", filter: "hue-rotate(100deg)"}}/> 
                     Opponent 2
                     <div id="opponent2">
-                        <Opponent data={statusBoard}/>
+                        {/* <Opponent data={statusBoard}/> */}
                     </div>
                     </div>
                 </td>
@@ -325,7 +377,7 @@ React.useEffect(() => {
                     <div class="papers" style={{transform: "rotateZ(7deg) translateY(-0.5em) translateX(1em)"}}>
                     Opponent 3<img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "20px", filter: "hue-rotate(210deg)"}}/> 
                     <div id="opponent3">
-                        <Opponent data={statusBoard}/>
+                        {/* <Opponent data={statusBoard}/> */}
                     </div>
                     </div>
                 </td>
@@ -335,7 +387,7 @@ React.useEffect(() => {
                     Opponent 4
                     
                     <div id="opponent4">
-                        <Opponent data={statusBoard}/>
+                        {/* <Opponent data={statusBoard}/> */}
                     </div>
                     </div>
                 </td>

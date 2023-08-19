@@ -3,6 +3,7 @@ import Opponent from './Opponent.js'
 import Clues from './Clues.js'
 import ReactDOM from 'react-dom';
 import Cluebar from './Cluebar.js';
+import Loading from './Loading.js';
 
 let INCORRECT_CELL = "🟧"
 let EMPTY_CELL = "⬜"
@@ -418,7 +419,6 @@ React.useEffect(() => {
                 <td style={{width: "25%", fontFamily: "Serif"}}>
                     <div class="papers" style={{transform: "rotateZ(6deg) translateY(-1em) translateX(-2em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-20px"}}/> 
-                        {console.log(opponentArr)}
                         {
                             opponentArr.length >= 1 ? (
                                 opponentArr[0].username
@@ -431,7 +431,7 @@ React.useEffect(() => {
                             opponentArr.length >= 1 ? (
                                 <Opponent data={opponentArr[0].statusBoard}/>
                             ) : (
-                                ""
+                                <Loading/>
                             )
                         }
                         

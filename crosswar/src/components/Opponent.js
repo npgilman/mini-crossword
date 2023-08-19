@@ -2,8 +2,6 @@ import React from 'react'
 
 const Opponent = (props) => {
     const statusBoard = Array.from(props.data);
-    const row = props.row;
-    const rowIndex = props.rowIndex;
   return (
     <>
     <div>

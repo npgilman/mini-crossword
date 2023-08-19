@@ -438,6 +438,11 @@ React.useEffect(() => {
                         </div>
                     </div>
                 </td >
+                {
+                    opponentArr.length < 1 ? (
+                        ""
+                    ) : (
+
                 <td style={{width: "25%", fontFamily: "Serif"} }>
                     <div class="papers" style={{transform: "rotateZ(-5deg) translateY(0.5em) translateX(-0.5em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "20px", filter: "hue-rotate(100deg)"}}/> 
@@ -453,12 +458,19 @@ React.useEffect(() => {
                             opponentArr.length >= 2 ? (
                                 <Opponent data={opponentArr[1].statusBoard}/>
                             ) : (
-                                ""
+                                <Loading/>
                             )
                         }
                         </div>
                     </div>
                 </td>
+                    )
+                }
+                {
+                    opponentArr.length < 2 ? (
+                        ""
+                    ) : (
+
                 <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
                     <div class="papers" style={{transform: "rotateZ(7deg) translateY(-0.5em) translateX(1em)"}}>
                     {
@@ -474,12 +486,21 @@ React.useEffect(() => {
                             opponentArr.length >= 3 ? (
                                 <Opponent data={opponentArr[2].statusBoard}/>
                             ) : (
-                                ""
+                                <Loading/>
                             )
                         }
                     </div>
                     </div>
                 </td>
+                                        
+                    )
+                }
+                {
+                    opponentArr.length < 3 ? (
+                        ""
+                    ) : (
+
+
                 <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
                     <div class="papers" style={{transform: "rotateZ(-5deg) translateY(0.9em) translateX(1.5em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-50px" , filter: "hue-rotate(290deg)"}}/> 
@@ -496,12 +517,14 @@ React.useEffect(() => {
                             opponentArr.length >= 4 ? (
                                 <Opponent data={opponentArr[3].statusBoard}/>
                             ) : (
-                                ""
+                                <Loading/>
                             )
                         }
                     </div>
                     </div>
                 </td>
+                    )
+                }
             </tr>
         </table>
     </>    

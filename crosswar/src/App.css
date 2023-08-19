@@ -303,15 +303,6 @@ table {
   transform: rotateZ(-5.5deg);
 }
 
-hr {
-  border: 1px solid black;
-  margin: 1px;
-  -webkit-transition: all 0.3s ease-in-out;
-  -o-transition: all 0.3s ease-in-out;
-  transition: all 0.3s ease-in-out;
-}
-
-
 #button-1{
   cursor: pointer;
   color: #282c34;
@@ -337,9 +328,6 @@ hr {
 
 #button-1:hover{
   color: #ecf0f1;
-}
-#button-1:hover hr{
-  border: 1px solid white;
 }
 
 #button-1:hover:before{

@@ -380,7 +380,7 @@ React.useEffect(() => {
                         </td>
                     </tr>
                     <tr style={{height: "60px"}}>
-                        <td style={{width: "2vh", height: "10px", overflow: "hidden", verticalAlign: "top"}}>
+                        <td style={{width: "2vh", height: "10px", overflow: "hidden", verticalAlign: "top", position: "relative"}}>
                             <div ref={crosswordRef} style={{whiteSpace: "nowrap"}}>
                                 {grid.map((row, rowIndex) => (
                                     <div key={rowIndex}>
@@ -400,6 +400,11 @@ React.useEffect(() => {
                                         ))}
                                     </div>
                                 ))}
+                            </div>
+                            <div style={{width: "100%", height: "100%", position: "absolute", top:"0", left: "0", backgroundColor: "rgba(0,0,0,0.0)"}}>
+                                <div id="button-1" style={{marginTop: "13vh", marginLeft:"4vw", marginRight:"4vw", marginBottom: "auto", zIndex: "1" ,  fontSize: "4.5vh", fontFamily: "KeplerStdBoldCaption", textAlign: "left", backgroundColor: "white", boxShadow: "2px 2px 2px 3px", padding: "20px 10px", textAlign: "center"}}>
+                                    Start Game
+                                </div>
                             </div>
                         </td>
                         <td style={{width: "65%", height: "10px", overflow: "hidden", verticalAlign: "top"}}>

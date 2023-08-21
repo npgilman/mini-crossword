@@ -37,6 +37,28 @@ io.on("connection", (socket) => {
         socket.to(data.room).emit("receive_name", data);
     });
 
+    socket.on("send_message", (data) => {
+        console.log(data.message);
+        io.in(data.room).emit("receive_message", data.message);
+    });
+
+    socket.on("start_game", (data) =>  { // Called when one user in a room presses Start Game
+        // Tell other users in room to start the game
+
+        // 1. Generate crossword
+        //      not done (call function or something)
+
+        // 2. prepare data
+
+        const gameData = {
+            room: data.room
+            // add crossword answers and clues here
+        }
+
+        // 3. Send Data
+        socket.to(data.room).emit("receive_game_start", gameData);
+    });
+
     socket.on("send_board", (data) => {
         socket.to(data.room).emit("receive_board", data);
     });

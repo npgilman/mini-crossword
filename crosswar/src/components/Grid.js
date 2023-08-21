@@ -4,6 +4,7 @@ import Clues from './Clues.js'
 import ReactDOM from 'react-dom';
 import Cluebar from './Cluebar.js';
 import Loading from './Loading.js';
+import GameChat from './GameChat.js';
 
 let INCORRECT_CELL = "🟧"
 let EMPTY_CELL = "⬜"
@@ -20,22 +21,25 @@ let answers = [
 
 export default function Grid(props) {
 
-// grid variables
+// Grid variables
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill("")));
 const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // used for blue highlights (row or col)
 const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
 
-// clue variables
+// Clue variables
 const [acrossCluesArray, setAcrossCluesArray] = useState(Array(5).fill("across across across across across across across across")); // across clues
 const [downCluesArray, setDownCluesArray] = useState(Array(5).fill("down down down down down down down down down down down down down")); // down clues
 const [selectedClue, setSelectedClue] = useState(0);
 
-// opponnent variables
-const[numOpponents, setNumOpponents] = useState(0);
-const[opponent1Name, setOpponent1Name] = useState("Opponent 1");
-const[opponent1Status, setOpponent1Status] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
+// Opponnent variables
+const [numOpponents, setNumOpponents] = useState(0);
+const [opponentArr, setOpponentArr] = useState([]); // all opponents in room
 
-const[opponentArr, setOpponentArr] = useState([]);
+// Chat variables
+const [chatArr, setChatArr] = useState([props.username + " joined the room!"])
+
+// Game variables
+const [gameStarted, setGameStarted] = useState(false);
 
 
 const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
@@ -289,16 +293,14 @@ useEffect(() => {
             ]            
         );
 
-        const oppList = opponentArr;
+        const oppList = opponentArr; // create an opponent list that includes the user, will be used by the new player to see who else is in the room
         oppList.push({
             id: props.socket.id,
             username: props.username,
             statusBoard: statusBoard
         })
-        console.log("Opp List:");
-        console.log(oppList);
 
-        // Send user data to server
+        // All opponent data to server
         // This data will be used to tell the new player who else is in the room
         const dataToSend = {
             toId: data.id, // will be used to tell which user will use this data
@@ -313,36 +315,21 @@ useEffect(() => {
     
 
     props.socket.on("receive_name", (data) => { // Lets a player who just joined the room see who else is already in the room
-        console.log(data);
         if (data.toId == props.socket.id) {
             setOpponentArr(data.oppList);
         }
-        // console.log( data.fromUsername+" just sent their name");
-        
-        // let alreadySent = false;
-        // opponentArr.map((opponent) => {
-        //     if (opponent.id = data.fromId) {
-        //         alreadySent = true;
-        //     }
-        // });
-
-        // if(data.toId == props.socket.id && !alreadySent) { // makes sure that only the new user is using the data
-        //     // Add player to opponent array
-        //     setOpponentArr(             // replace the state,
-        //         [                       // with a new array,
-        //             ...opponentArr,     // that has all of the old opponents,
-        //             {                   // and the new opponent at the end.
-        //                 id: data.fromId,
-        //                 username: data.fromUsername,
-        //                 statusBoard: Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL))
-        //             }
-        //         ]            
-        //     );
-
-        //     console.log("this is the new opponent array");
-        //     console.log(opponentArr);
-        // }
     });
+
+    props.socket.on("receive_message", (data) => {
+        setChatArr((list) => [...list, data]);
+    });
+
+    props.socket.on("receive_game_start", (data) => { // Start game
+        setGameStarted(true); // set gameStarted state to true
+
+        // Set clues and crossword state variables
+        // Not done yet, implement after crossword generation is done.
+    })
 
     props.socket.on("receive_board", (data) => { // Called when an opponent types something in their board
         if(data.id != props.socket.id) { // Only update if user is not the player who made the change
@@ -357,17 +344,25 @@ useEffect(() => {
         }
     });
 
-
+     return () => props.socket.on("receive_message");
     // return () => props.socket.on("announce_player");
     // return () =>props.socket.on("receive_player");
 
 }, [props.socket, opponentArr]);
 
-/* This is used to render the Opponent's status board. It makes sure div exists before trying to render in it*/
-const [domReady, setDomReady] = React.useState(false)
-React.useEffect(() => {
-    setDomReady(true)
-}, [])
+// /* This is used to render the Opponent's status board. It makes sure div exists before trying to render in it*/
+// const [domReady, setDomReady] = React.useState(false)
+// React.useEffect(() => {
+//     setDomReady(true)
+// }, [])
+
+const startGame = () => { // Called when user presses Start Game in a room
+    setGameStarted(true);
+    const data = {
+        room: props.room
+    }
+    props.socket.emit("start_game", data);
+}
 
   return (
     <>
@@ -401,18 +396,36 @@ React.useEffect(() => {
                                     </div>
                                 ))}
                             </div>
-                            <div style={{width: "100%", height: "100%", position: "absolute", top:"0", left: "0", backgroundColor: "rgba(0,0,0,0.0)"}}>
-                                <div id="button-1" style={{marginTop: "13vh", marginLeft:"4vw", marginRight:"4vw", marginBottom: "auto", zIndex: "1" ,  fontSize: "4.5vh", fontFamily: "KeplerStdBoldCaption", textAlign: "left", backgroundColor: "white", boxShadow: "2px 2px 2px 3px", padding: "20px 10px", textAlign: "center"}}>
-                                    Start Game
-                                </div>
-                            </div>
+                            {
+                                !gameStarted ? (
+                                    <div style={{width: "100%", height: "100%", position: "absolute", top:"0", left: "0", backgroundColor: "rgba(0,0,0,0.0)"}}>
+                                        <div id="button-1" style={{marginTop: "13vh", marginLeft:"4vw", marginRight:"4vw", marginBottom: "auto", zIndex: "1" ,  fontSize: "4.5vh", fontFamily: "KeplerStdBoldCaption", textAlign: "left", backgroundColor: "white", boxShadow: "2px 2px 2px 3px", padding: "20px 10px", textAlign: "center"}}
+                                            onClick={startGame} >
+                                            Start Game
+                                        </div>
+                                    </div>
+                                ) : (
+                                    ""
+                                )
+                            }
+
                         </td>
                         <td style={{width: "65%", height: "10px", overflow: "hidden", verticalAlign: "top"}}>
-                            <table style={{height: "100%"}}>
-                                <tr id='cluebox'>
-                                    <Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
-                                </tr>
-                            </table>
+                            {
+                                !gameStarted ? (
+                                    <div style={{position: "relative", marginTop:  "0", width: "100%", height: "100%", marginLeft: "auto", marginTop: "auto"}}>
+                                        <GameChat room={props.room} chatArr={chatArr} username={props.username} setChatArr={setChatArr} socket={props.socket}/>
+                                    </div>
+                                    
+                                ) : (
+                                    <table style={{height: "100%"}}>
+                                        <tr id='cluebox'>
+                                            <Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
+                                        </tr>
+                                    </table>
+                                )
+                            }
+
                         </td>
                     </tr>
                 </table>
@@ -421,6 +434,9 @@ React.useEffect(() => {
 
         <table style={{color: "black"}}>
             <tr>
+                {
+                    
+                }
                 <td style={{width: "25%", fontFamily: "Serif"}}>
                     <div class="papers" style={{transform: "rotateZ(6deg) translateY(-1em) translateX(-2em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-20px"}}/> 

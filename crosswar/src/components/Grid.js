@@ -22,30 +22,30 @@ let answers = [
 export default function Grid(props) {
 
 // Grid variables
-const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill("")));
-const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // used for blue highlights (row or col)
-const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
+const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill(""))); // Main grid variable that holds all user's inputs
+const [selection, setSelection] = useState({ row: -1, col: -1, cell: [-1, -1]}); // Used for blue highlights (row or col)
+const [statusBoard, setStatusBoard] = useState(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL))); // Checks if an input is correct or incorrect, send to other users in a room
 
 // Clue variables
 const [acrossCluesArray, setAcrossCluesArray] = useState(Array(5).fill("across across across across across across across across")); // across clues
 const [downCluesArray, setDownCluesArray] = useState(Array(5).fill("down down down down down down down down down down down down down")); // down clues
-const [selectedClue, setSelectedClue] = useState(0);
+const [selectedClue, setSelectedClue] = useState(0); // Selected clue variable used to store and update the user's selected clue
 
 // Opponnent variables
-const [numOpponents, setNumOpponents] = useState(0);
-const [opponentArr, setOpponentArr] = useState([]); // all opponents in room
+const [numOpponents, setNumOpponents] = useState(0); 
+const [opponentArr, setOpponentArr] = useState([]); // List of all of the opponents in room, with their username and unique id
 
 // Chat variables
-const [chatArr, setChatArr] = useState([props.username + " joined the room!"])
+const [chatArr, setChatArr] = useState([props.username + " joined the room!"]) // Holds list of messages in pregame chat
 
 // Game variables
-const [gameStarted, setGameStarted] = useState(false);
+const [gameStarted, setGameStarted] = useState(false); // Boolean var to determine whether game has started or not.
 
 
-const crosswordRef = useRef(null); // necessary for moving from one input to another after key press
+const crosswordRef = useRef(null); // Necessary for moving from one input to another after key press
 
-// updates the status board when a cell change occurs (see handleCellChange)
-const handleStatusUpdate = () => {
+
+const handleStatusUpdate = () => { // Updates the status board when a cell change occurs (see handleCellChange)
     // iterate through grid, checking value of each cell against status board
     var newStatusBoard = [...statusBoard];
 
@@ -76,35 +76,38 @@ const handleStatusUpdate = () => {
     }
     setStatusBoard(newStatusBoard);
 
-    // emit status board to server
+    // Emit status board to server with socket io
 
+    // 1. Prepare data with room, board, and id
     const data = {
         room: props.room,
         board: newStatusBoard,
         id: props.socket.id
     }
 
+    // 2. Emit to server
     props.socket.emit("send_board", data);
 };
 
 function handleClueClick(e, clueType, clueNumber) { 
     // If user clicks a clue, focus on that row/col on the grid
     // Parameters:
-    // e: event (click), clueType: across "a" or down "d", clueNumber: the number of the clue 0-4
-    console.log(clueNumber);
+    //      e: event (click) 
+    //      clueType: across "a" or down "d" 
+    //      clueNumber: the number of the clue 0-4
 
     // Check clueType to see if it is an across or down clue
     if (clueType == "a") {
 
         let colIndex = 0;
-        for(let i = 0; i < 5; i++) { // this loop finds the first empty cell in the clue row. We will use this to select the first empty cell to type next in.
+        for(let i = 0; i < 5; i++) { // This loop finds the first empty cell in the clue row. We will use this to select the first empty cell to type next in.
             if (statusBoard[clueNumber][i] != EMPTY_CELL) {
                 colIndex++;
             }
             else {
-                break;
+                break; // Exit loop if we found a non-empty cell
             }
-            if(colIndex == 5) { // if row is full, highlight start
+            if(colIndex == 5) { // If row is full, highlight start
                 colIndex = 0;
             }
         }
@@ -114,15 +117,15 @@ function handleClueClick(e, clueType, clueNumber) {
         const cell = crosswordRef.current.querySelector('#cell' + clueNumber + '-' + colIndex +'');
         cell.focus(); // focus on cell to be able to write in the cell
     }
-    else {
+    else { // Do the same thing but for a down clue
 
         let rowIndex = 0;
-        for(let i = 0; i < 5; i++) { // this loop finds the first empty cell in the clue column. We will use this to select the first empty cell to type next in.
+        for(let i = 0; i < 5; i++) { // This loop finds the first empty cell in the clue column. We will use this to select the first empty cell to type next in.
             if (statusBoard[i][clueNumber] != EMPTY_CELL) {
                 rowIndex++;
             }
             else {
-                break;
+                break; // Exit loop if we found a non-empty cell
             }
             if(rowIndex == 5) { // if column is full, highlight start
                 rowIndex = 0;
@@ -170,9 +173,9 @@ const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
 };
 
 const handleCellChange = (e, rowIndex, colIndex) => {
-    // key entered is in e.key
+    // Key entered is in e.key
     if (e.key !== "Backspace" && e.key.length > 1) {
-        // prevents keys like "Up" for the up arrow key from doing anything
+        // Prevents keys like "Up" for the up arrow key from doing anything
     }
     else if (e.key === "Backspace") { // backspace pressed
         if (e.target.value !== "") {
@@ -280,6 +283,7 @@ function backgroundColor(rowIndex, colIndex) { // cell color
 useEffect(() => {
     props.socket.on("announce_player", (data) => { // Called when a new opponent joins the room
         console.log(data.username + " and id " + data.id + " has joined the room!");
+        setChatArr((list) => [...list, (data.username + " joined the room!")]); // update messages with user joining message
 
         // Add player to opponent array
         setOpponentArr(             // replace the state,
@@ -329,7 +333,7 @@ useEffect(() => {
 
         // Set clues and crossword state variables
         // Not done yet, implement after crossword generation is done.
-    })
+    });
 
     props.socket.on("receive_board", (data) => { // Called when an opponent types something in their board
         if(data.id != props.socket.id) { // Only update if user is not the player who made the change

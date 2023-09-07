@@ -39,19 +39,23 @@ function getWords(grid)
     if (grid.length != 5)
         throw new Error('Grid does not conform to expected size');
 
-    let rows = [];
-    let columns = [];
+    const rows = [];
+    const columns = [];
     for (let i = 0; i < 5; i++)
     {
-        let row_word = '';
-        grid[i].forEach((element) => row_word = row_word + element);
-        rows.push(row_word);
-        
-        let col_word = '';
-        grid.forEach((element) => col_word = col_word + element[i]);
-        columns.push(col_word);
+        // Build row words by iterating across grid[i]
+        let rowWord = ''; 
+        // Build column words by iterating down grid[j]     
+        let colWord = '';
+        for (let j = 0; j < 5; j++)
+        {
+            rowWord += grid[i][j];
+            colWord += grid[j][i];
+        }
+        rows.push(rowWord);
+        columns.push(colWord);
     }
-
+    // Combine rows and columns into one array
     return rows.concat(columns);
 }
 

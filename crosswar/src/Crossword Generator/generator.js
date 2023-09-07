@@ -11,6 +11,23 @@
 import { parse } from "csv-parse";
 import * as fs from 'fs';
 
+/**
+ * 
+ * @param {*} array words in dataset
+ */
+function fisherYatesShuffle(array)
+{
+    // iterate through array backwards
+    for (let i = array.length - 1; i > 0; i--) {
+        // set j to a random number from (0) to (# of remaining elements)
+        const j = Math.floor(Math.random() * (i + 1));
+        // swap curr element with element at [j]
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+
 
 /**
  * 
@@ -81,7 +98,7 @@ function clueMapPromise() {
             reject(error);
           })
           .on("end", function () {
-            console.log("Clue CSV Parsed.");
+            // console.log("Clue CSV Parsed.");
             resolve(clueMap);
           });
     });
@@ -132,7 +149,6 @@ function insertWord(word, grid, isDown, index)
         grid[x][y] = word[i];
     }
 }
-
 
 
 /**
@@ -364,4 +380,4 @@ function generateCrossword(grid, words, beginnings) {
     }
 }
 
-export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword, checkWordBeginnings };
+export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword, fisherYatesShuffle };

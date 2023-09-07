@@ -8,7 +8,11 @@ total_execution_time = 0
 
 for i in range(num_runs):
   start_time = time.time()
+
+  # Run index.js and display output
+  # output = subprocess.run(["node", "index.js"])
   
+  # Run index.js and hide output
   output = subprocess.run(["node", "index.js"], stdout=subprocess.DEVNULL)
   
   end_time = time.time()

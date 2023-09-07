@@ -1,5 +1,5 @@
 
-import { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword} from "./generator.js";
+import { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword, checkWordBeginnings} from "./generator.js";
 
 async function main_func() {
     try {
@@ -18,8 +18,14 @@ async function main_func() {
         for (let i = 0; i < 5; i++) { 
             grid.push(['-', '-', '-', '-', '-']); 
         }
+
+        const beginnings = new Map();
+        beginnings.set("-----", true);
+        for (let i = 0; i < words.length; i++) {
+            beginnings.set(words[i], true);
+        }
         
-        generateCrossword(grid, words, 0, 0);
+        generateCrossword(grid, words, beginnings);
 
         let answers = getWords(grid);
         let clues = getClues(answers, wordsAndClues);

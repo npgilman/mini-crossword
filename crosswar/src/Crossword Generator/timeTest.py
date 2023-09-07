@@ -2,7 +2,7 @@ import subprocess
 import time
 
 # Number of times to run test
-num_runs = 20
+num_runs = 100
 
 total_execution_time = 0
 

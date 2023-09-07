@@ -148,59 +148,57 @@ function checkWordBeginnings(wordBeginnings, words, grid)
     // iterate through the words currently in grid
     for (let i = 0; i < wordsInGrid.length; i++)
     {
-        // if this word hasn't been searched yet
-        if (!wordBeginnings.has(wordsInGrid[i]))
-        {
-            let acceptableWord = true;
+        //console.log("Checking " + wordsInGrid[i]);
 
-            // Iterate through each letter of words in dataset
-            for (let j = 0; j < words.length; j++)
-            {   
-                // Skip dataset word if first letter is wrong
-                if (words[j][0] != wordsInGrid[i][0]) {
-                    continue;
-                }
+        // if this word been searched already...
+        if (wordBeginnings.has(wordsInGrid[i])) {
+            // ... and was marked unacceptable, return false
+            if (!wordBeginnings.get(wordsInGrid[i])) { return false;}
+            // otherwise go to next word in grid
+            continue;
+        }
+        
+        let acceptableWord = false;
 
-                // Iterate through each letter of current dataset word 
-                for (let k = 0; k < words[j].length; k++)
-                {
-                    // Check if word in grid matches database word
-                    // If a blank letter is reached, this word is acceptable
-                    if (wordsInGrid[i][k] === '-') {
-                        acceptableWord = true;
-                        break;
-                    }
-                    // if letter doesn't match, go to next word in dataset
-                    if (wordsInGrid[i][k] !== words[j][k]) {
-                        break;
-                    }
-                }
-                if (acceptableWord) {
+        // Iterate through each letter of words in dataset
+        wordloop: for (let j = 0; j < words.length; j++)
+        {   
+            // Skip dataset word if first letter is wrong
+            if (words[j][0] != wordsInGrid[i][0]) {
+                continue;
+            }
+
+            // Iterate through each letter of current dataset word 
+            letterloop: for (let k = 0; k < words[j].length; k++)
+            {
+                // Check if word in grid matches database word
+                // If a blank letter is reached, this word is acceptable
+                if (wordsInGrid[i][k] === '-') {
+                    acceptableWord = true;
                     break;
                 }
+                // if letter doesn't match, go to next word in dataset
+                if (wordsInGrid[i][k] !== words[j][k]) {
+                    break letterloop;
+                }
             }
-            // Save the result of checking word in grid
-            wordBeginnings[wordsInGrid[i]] = acceptableWord;
+            if (acceptableWord) {
+                break;
+            }
+        }
+        // Save the result of checking word in grid
+        wordBeginnings[wordsInGrid[i]] = acceptableWord;
 
-            // Return false if an unacceptable word was found
-            if (!acceptableWord) {
-                return false;
-            }
+        // Return false if an unacceptable word was found
+        if (!acceptableWord) {
+            return false;
         }
-        else {
-            // If the current word has been marked false, return accordingly
-            if (!wordBeginnings.get(wordsInGrid[i])) {
-                return false;
-            }
-        }
+        
     }
     return true;
 }
 
-function generateCrossword(grid, words) {
-    // Initialize the beginnings map with a single entry
-    const beginnings = new Map();
-    beginnings.set("-----", true);
+function generateCrossword(grid, words, beginnings) {    
 
     let temp = "";
     for (let a = 0; a < words.length; a++) { // finding row 1
@@ -366,4 +364,4 @@ function generateCrossword(grid, words) {
     }
 }
 
-export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword };
+export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword, checkWordBeginnings };

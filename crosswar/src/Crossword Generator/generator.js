@@ -22,15 +22,20 @@ function getWords(grid)
     if (grid.length != 5)
         throw new Error('Grid does not conform to expected size');
 
+    let rows = [];
     let columns = [];
     for (let i = 0; i < 5; i++)
     {
+        let row_word = '';
+        grid[i].forEach((element) => row_word = row_word + element);
+        rows.push(row_word);
+        
         let col_word = '';
         grid.forEach((element) => col_word = col_word + element[i]);
-        columns.push(col_word)
+        columns.push(col_word);
     }
 
-    return grid.concat(columns);
+    return rows.concat(columns);
 }
 
 /**
@@ -44,7 +49,7 @@ function getClues(wordsInGrid, wordsAndClues)
     let inorderClues = [];
     for (let i = 0; i < wordsInGrid.length; i++)
     {
-        inorderClues.push(wordsAndClues[wordsInGrid[i]]);
+        inorderClues.push(wordsAndClues.get(wordsInGrid[i]));
     }
     return inorderClues;
 }
@@ -57,7 +62,6 @@ function getClues(wordsInGrid, wordsAndClues)
 async function createClueMapping() {
     try {
         let clueMap = await clueMapPromise();
-
         return clueMap;
     } catch (error) {
         console.error("Error while generating clues:", error);
@@ -111,7 +115,27 @@ function printGrid(grid)
 }
 
 /**
- *  TODO: COPY CJs DOCUMENTATION FROM ORIGINAL
+ * 
+ * @param {*} word
+ * @param {*} grid
+ * @param {*} isDown
+ * @param {*} index
+ */
+function insertWord(word, grid, isDown, index)
+{
+    for (let i = 0; i < grid.length; i++) {
+        if (isDown) { // insert word down
+            var x = i, y = index;
+        } else { // insert word across
+            var x = index, y = i;
+        }
+        grid[x][y] = word[i];
+    }
+}
+
+
+
+/**
  * @param {*} wordBeginnings 
  * @param {*} words 
  * @param {*} grid 
@@ -119,39 +143,55 @@ function printGrid(grid)
  */
 function checkWordBeginnings(wordBeginnings, words, grid)
 {
-    // should be an array
-    let beginnings = getWords(grid);
+    let wordsInGrid = getWords(grid);
 
-    // Number of words in grid = number of columns + number of rows
-    let numWords = grid.length + grid[0].length;
-    
-    for (let i = 0; i < numWords; i++)
+    // iterate through the words currently in grid
+    for (let i = 0; i < wordsInGrid.length; i++)
     {
-        if (wordBeginnings.has(beginnings[i]))
+        // if this word hasn't been searched yet
+        if (!wordBeginnings.has(wordsInGrid[i]))
         {
-            let beginningFound = false;
-            // could refactor to words.forEach({lambda funct})
-            // staying consistent with CJ original design for now
+            let acceptableWord = true;
+
+            // Iterate through each letter of words in dataset
             for (let j = 0; j < words.length; j++)
-            {
-                // MAGIC CONSTANT 5 BECAUSE WORD LENGTH IS 5
-                // REPLACE WITH words[j].length() OR SOMETHING EQUIVALENT
+            {   
+                // Skip dataset word if first letter is wrong
+                if (words[j][0] != wordsInGrid[i][0]) {
+                    continue;
+                }
+
+                // Iterate through each letter of current dataset word 
                 for (let k = 0; k < words[j].length; k++)
                 {
-                    if (words[j][k] == beginnings[i][k])
-                    {
-                        if ((k == 4) || ((k+1 < 5) && beginnings[i][k+1] == '-'))
-                        {
-                            beginningFound = true;
-                            break;
-                        }
+                    // Check if word in grid matches database word
+                    // If a blank letter is reached, this word is acceptable
+                    if (wordsInGrid[i][k] === '-') {
+                        acceptableWord = true;
+                        break;
+                    }
+                    // if letter doesn't match, go to next word in dataset
+                    if (wordsInGrid[i][k] !== words[j][k]) {
+                        break;
                     }
                 }
+                if (acceptableWord) {
+                    break;
+                }
             }
-            wordBeginnings[beginnings[i]] = beginningFound;
+            // Save the result of checking word in grid
+            wordBeginnings[wordsInGrid[i]] = acceptableWord;
+
+            // Return false if an unacceptable word was found
+            if (!acceptableWord) {
+                return false;
+            }
         }
-        if (!wordBeginnings[beginnings[i]]) {
-            return false;
+        else {
+            // If the current word has been marked false, return accordingly
+            if (!wordBeginnings.get(wordsInGrid[i])) {
+                return false;
+            }
         }
     }
     return true;
@@ -164,7 +204,11 @@ function generateCrossword(grid, words) {
 
     let temp = "";
     for (let a = 0; a < words.length; a++) { // finding row 1
-        grid[0] = words[a];
+        // Not using insertWord() here because if row & col are both 0 it will insert as 1 down
+        // grid[0] = words[a];
+        temp = words[a];
+        insertWord(temp, grid, false, 0);
+        
 
         if (!checkWordBeginnings(beginnings, words, grid)) {
             continue;
@@ -174,17 +218,19 @@ function generateCrossword(grid, words) {
             if (b === a)
                 continue;
 
-            // undo insertion if needed
+            // Check if there is a word in 1 Down that needs to be removed
             if (grid[1][0] !== '-') {
-                grid[1] = '-' + grid[1].substring(1);
-                grid[2] = '-' + grid[2].substring(1);
-                grid[3] = '-' + grid[3].substring(1);
-                grid[4] = '-' + grid[4].substring(1);
+                let emptyWord = grid[0][0] + '----';
+                insertWord(emptyWord, grid, true, 0);
             }
 
             temp = words[b];
+            
+            // If temp and 1 Across have the same first letter, insert temp as 1 Down
             if (temp[0] === grid[0][0]) {
-                grid[1] = temp;
+
+                insertWord(temp, grid, true, 0); // Should insert temp as 1 Down
+
                 if (!checkWordBeginnings(beginnings, words, grid)) {
                     continue;
                 }
@@ -194,14 +240,15 @@ function generateCrossword(grid, words) {
                         continue;
                     // undo insertion if needed
                     if (grid[1][1] !== '-') {
-                        grid[1] = grid[1].substring(0, 1) + '-' + grid[1].substring(2);
-                        grid[2] = grid[2].substring(0, 1) + '-' + grid[2].substring(2);
-                        grid[3] = grid[3].substring(0, 1) + '-' + grid[3].substring(2);
-                        grid[4] = grid[4].substring(0, 1) + '-' + grid[4].substring(2);
+                        let emptyWord = grid[1][0] + '----';
+                        insertWord(emptyWord, grid, false, 1);
                     }
+
                     temp = words[c];
                     if (temp[0] === grid[1][0]) {
-                        grid[1] = temp;
+
+                        insertWord(temp, grid, false, 1); // Should insert temp as 2 Across
+
                         if (!checkWordBeginnings(beginnings, words, grid)) {
                             continue;
                         }
@@ -209,13 +256,13 @@ function generateCrossword(grid, words) {
                         for (let d = 0; d < words.length; d++) { // finding col 2
                             // undo insertion if needed
                             if (grid[2][1] !== '-') {
-                                grid[2] = grid[2].substring(0, 1) + '-' + grid[2].substring(2);
-                                grid[3] = grid[3].substring(0, 1) + '-' + grid[3].substring(2);
-                                grid[4] = grid[4].substring(0, 1) + '-' + grid[4].substring(2);
+                                let emptyWord = grid[0][1] + grid[1][1] + '---';
+                                insertWord(emptyWord, grid, true, 1);
                             }
                             temp = words[d];
                             if (temp[0] === grid[0][1] && temp[1] === grid[1][1]) {
-                                grid[2] = temp;
+
+                                insertWord(temp, grid, true, 1); // Should insert temp as 2 Down
                                 if (!checkWordBeginnings(beginnings, words, grid)) {
                                     continue;
                                 }
@@ -223,26 +270,30 @@ function generateCrossword(grid, words) {
                                 for (let e = 0; e < words.length; e++) { // finding row 3
                                     // undo insertion if necessary
                                     if (grid[2][2] !== '-') {
-                                        grid[2] = grid[2].substring(0, 2) + '-' + grid[2].substring(3);
-                                        grid[3] = grid[3].substring(0, 2) + '-' + grid[3].substring(3);
-                                        grid[4] = grid[4].substring(0, 2) + '-' + grid[4].substring(3);
+                                        let emptyWord = grid[2][0] + grid[2][1] + '---';
+                                        insertWord(emptyWord, grid, false, 2);
                                     }
                                     temp = words[e];
                                     if (temp[0] === grid[2][0] && temp[1] === grid[2][1]) {
-                                        grid[2] = temp;
+
+                                        insertWord(temp, grid, false, 2); // Should insert temp as 3 Across
+
                                         if (!checkWordBeginnings(beginnings, words, grid)) {
                                             continue;
                                         }
 
+
                                         for (let f = 0; f < words.length; f++) { // finding col 3
                                             // undo insertion if necessary
                                             if (grid[3][2] !== '-') {
-                                                grid[3] = grid[3].substring(0, 2) + '-' + grid[3].substring(3);
-                                                grid[4] = grid[4].substring(0, 2) + '-' + grid[4].substring(3);
+                                                let emptyWord = grid[0][2] + grid[1][2] + grid[2][2] + '--';
+                                                insertWord(emptyWord, grid, true, 2);
                                             }
                                             temp = words[f];
                                             if (temp[0] === grid[0][2] && temp[1] === grid[1][2] && temp[2] === grid[2][2]) {
-                                                grid[3] = temp;
+
+                                                insertWord(temp, grid, true, 2); // Should insert temp as 3 Down
+
                                                 if (!checkWordBeginnings(beginnings, words, grid)) {
                                                     continue;
                                                 }
@@ -250,13 +301,14 @@ function generateCrossword(grid, words) {
                                                 for (let g = 0; g < words.length; g++) { // finding row 4
                                                     // undo insertion if necessary
                                                     if (grid[3][3] !== '-') {
-                                                        grid[3] = grid[3].substring(0, 3) + '-' + grid[3].substring(4);
-                                                        grid[4] = grid[4].substring(0, 3) + '-' + grid[4].substring(4);
+                                                        let emptyWord = grid[3][0] + grid[3][1] + grid[3][2] + '--';
+                                                        insertWord(emptyWord, grid, false, 3);
                                                     }
                                                     temp = words[g];
-                                                    if (temp[0] === grid[3][0] && temp[1] === grid[3][1] &&
-                                                        temp[2] === grid[3][2]) {
-                                                        grid[3] = temp;
+                                                    if (temp[0] === grid[3][0] && temp[1] === grid[3][1] && temp[2] === grid[3][2]) {
+
+                                                        insertWord(temp, grid, false, 3); // Should insert temp as 4 Across
+
                                                         if (!checkWordBeginnings(beginnings, words, grid)) {
                                                             continue;
                                                         }
@@ -264,12 +316,14 @@ function generateCrossword(grid, words) {
                                                         for (let h = 0; h < words.length; h++) { // finding col 4
                                                             // undo insertion if necessary
                                                             if (grid[4][3] !== '-') {
-                                                                grid[4] = grid[4].substring(0, 3) + '-';
+                                                                let emptyWord = grid[0][3] + grid[1][3] + grid[2][3] + grid[3][3] + '-';
+                                                                insertWord(emptyWord, grid, true, 3);
                                                             }
                                                             temp = words[h];
                                                             if (temp[0] === grid[0][3] && temp[1] === grid[1][3] &&
                                                                 temp[2] === grid[2][3] && temp[3] === grid[3][3]) {
-                                                                grid[4] = temp;
+
+                                                                insertWord(temp, grid, true, 3); // Should insert temp as 4 Down
                                                                 if (!checkWordBeginnings(beginnings, words, grid)) {
                                                                     continue;
                                                                 }
@@ -277,12 +331,14 @@ function generateCrossword(grid, words) {
                                                                 for (let i = 0; i < words.length; i++) { // finding row 5
                                                                     // undo insertion if necessary
                                                                     if (grid[4][4] !== '-') {
-                                                                        grid[4] = grid[4].substring(0, 4) + '-';
+                                                                        let emptyWord = grid[4][0] + grid[4][1] + grid[4][2] + grid[4][3] + '-';
+                                                                        insertWord(emptyWord, grid, false, 4);
                                                                     }
                                                                     temp = words[i];
                                                                     if (temp[0] === grid[4][0] && temp[1] === grid[4][1] &&
                                                                         temp[2] == grid[4][2] && temp[3] == grid[4][3]) {
-                                                                        grid[4] = temp;
+
+                                                                        insertWord(temp, grid, false, 4);
 
                                                                         for (let j = 0; j < words.length; j++) {
                                                                             temp = words[j];
@@ -309,13 +365,5 @@ function generateCrossword(grid, words) {
         }
     }
 }
-
-
-
-createClueMapping();
-let testCluess = ["0","1","2","3","4","5","6","7","8","9"]
-printGrid(["teste", "babae", "mamay", "float", "poopy"]);
-printClues(testCluess);
-
 
 export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword };

@@ -3,27 +3,29 @@ import { createClueMapping, getWords, getClues, printGrid, printClues, generateC
 
 async function main_func() {
     try {
-        // CREATE CLUE MAP CURRENTLY NOT WORKING. 
-        // PARSING BUT NOT STORING DATA
-        // ASSUME IT WORKS AND COME BACK TO FIX
+        // create map <words, clues> from NYT dataset
         let wordsAndClues = await createClueMapping();
+        // get words (keys) from the map
         let words = Array.from(wordsAndClues.keys());
-        console.log(words.length)
+        console.log(words.length + " words in dataset");
 
         // temporary shuffling method
         let shuffled = words.sort((a, b) => 0.5 - Math.random());
+        console.log("Clues shuffled");
 
-        let grid = []
-        for (let i = 0; i < 5; i++) { grid.push("-----"); }
+        // grid is a 2D Array of characters
+        let grid = [];
+        for (let i = 0; i < 5; i++) { 
+            grid.push(['-', '-', '-', '-', '-']); 
+        }
         
-        generateCrossword(grid, shuffled, 0, 0);
+        generateCrossword(grid, words, 0, 0);
 
         let answers = getWords(grid);
         let clues = getClues(answers, wordsAndClues);
 
         printGrid(grid);
         printClues(clues);
-        console.log(wordsAndClues.get("VELMA"));
 
     } catch (error) {
         console.error("Error while generating clues:", error);

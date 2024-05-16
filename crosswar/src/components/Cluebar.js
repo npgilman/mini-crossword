@@ -8,7 +8,8 @@ const Cluebar = (props) => {
 
 
     const [time, setTime] = useState(0);
-    const [running, setRunning] = useState(true);
+    //const [running, setRunning] = useState(true);
+    const running = props.runTimer;
 
     useEffect(() => { // timer functionality
         let interval;

@@ -36,6 +36,32 @@
   border: 1px solid black; 
 }
 
+/* when a player finishes the crossword and got everything correct */
+.green {
+  animation: blinker-green 1.2s ease-in-out infinite;
+  color: black
+}
+
+/* when a player finishes the crossword and got parts wrong */
+.red {
+  animation: blinker-red 1.5s ease-in 1;
+  color: black;
+}
+
+/* blinking green animation */
+@keyframes blinker-green {
+  50% {
+    color: green
+  }
+}
+
+/* blinking red animation */
+@keyframes blinker-red {
+  50% {
+      color: red;
+  }
+}
+
 /* parent element of status board*/
 .opponent-grid {
   white-space: nowrap;

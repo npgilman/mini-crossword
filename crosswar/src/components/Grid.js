@@ -10,17 +10,9 @@ let INCORRECT_CELL = "🟧"
 let EMPTY_CELL = "⬜"
 let CORRECT_CELL = "🟩"
 
-// answers as reflected in the status board
-// let answers = [
-//     "abcde",
-//     "fghij",
-//     "klmno",
-//     "pqrst",
-//     "uvwxy",
-// ]
-
 export default function Grid(props) {
 
+// answers as reflected in the status board
 const [answers, setAnswers] = useState(["abcde",
 "fghij",
 "klmno",
@@ -46,6 +38,11 @@ const [chatArr, setChatArr] = useState([props.username + " joined the room!"]) /
 
 // Game variables
 const [gameStarted, setGameStarted] = useState(false); // Boolean var to determine whether game has started or not.
+const [playerFinished, setPlayerFinished] = useState(false); // Boolean to determine if user has finished their crossword
+const [playerFinishedCorrect, setPlayerFinishedCorrect] = useState(false); // Boolean to determine if user has entered all the correct answers
+
+// Timer running
+const [running, setRunning] = useState(false);
 
 
 const crosswordRef = useRef(null); // Necessary for moving from one input to another after key press
@@ -58,6 +55,8 @@ const handleStatusUpdate = () => { // Updates the status board when a cell chang
     var numRows = grid.length;
     var numColumns = grid[0].length;
     let updateFound = false;
+    let complete = true;
+    let total = 0;
 
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numColumns; j++) {
@@ -68,6 +67,8 @@ const handleStatusUpdate = () => { // Updates the status board when a cell chang
                 // console.log("RECEIVED: "+grid[i][j]);
                 //console.log("Incorrect - remove this");
                 newStatusBoard[i][j] = INCORRECT_CELL
+                setPlayerFinished(false);
+                setPlayerFinishedCorrect(false);
             }
 
             // cell is empty but statusboard isn't up to date
@@ -75,6 +76,8 @@ const handleStatusUpdate = () => { // Updates the status board when a cell chang
                 //update statusboard and end loop
                 //console.log("Empty - remove this");
                 newStatusBoard[i][j] = EMPTY_CELL
+                setPlayerFinished(false);
+                setPlayerFinishedCorrect(false);
             }
 
             // cell is correct but statusboard isn't up to date
@@ -82,9 +85,31 @@ const handleStatusUpdate = () => { // Updates the status board when a cell chang
                 //update statusboard and end loop
                 //console.log("correct - remove this");
                 newStatusBoard[i][j] = CORRECT_CELL
+            } 
+            else {
+                complete = false;
             }
+
+            if (grid[i][j] != "") {
+                total = total + 1;
+            }
+
         }
+
     }
+
+    if (complete == true) {
+        setPlayerFinished(true);
+        setPlayerFinishedCorrect(true);
+        setRunning(false);
+        console.log("Finished with everything correct!")
+    }
+    else if (total == 25) {
+        setPlayerFinished(false);
+        setPlayerFinished(true);
+        console.log("One or more incorrect answers")
+    }
+
     setStatusBoard(newStatusBoard);
 
     // Emit status board to server with socket io
@@ -291,6 +316,26 @@ function backgroundColor(rowIndex, colIndex) { // cell color
     }
 }
 
+function letterBoxColor(rowIndex, colIndex) {
+    if (playerFinished) {
+        if (playerFinishedCorrect) {
+            return "letter-box green"
+        }
+        else {
+            if (statusBoard[rowIndex][colIndex] == INCORRECT_CELL) {
+                return "letter-box red"
+            }
+            else {
+                console.log("Correct answer here -DELETE")
+                return "letter-box"
+            }
+        }
+    }
+    else {
+        return "letter-box"
+    }
+}
+
 useEffect(() => {
     props.socket.on("announce_player", (data) => { // Called when a new opponent joins the room
         console.log(data.username + " and id " + data.id + " has joined the room!");
@@ -341,12 +386,13 @@ useEffect(() => {
 
     props.socket.on("receive_game_start", (data) => { // Start game
         setGameStarted(true); // set gameStarted state to true
+        setRunning(true);
 
         // Set clues and crossword state variables
-        console.log("got from server:");
+        // console.log("got from server:");
         console.log(data.ans);
-        console.log(data.acrossClues);
-        console.log(data.downClues);
+        // console.log(data.acrossClues);
+        // console.log(data.downClues);
         setAnswers(data.ans);
         setAcrossCluesArray(data.acrossClues);
         setDownCluesArray(data.downClues);
@@ -393,7 +439,7 @@ const startGame = () => { // Called when user presses Start Game in a room
                 <table style={{color: "black", height: "1px", overflow: "scroll"}}>
                     <tr>
                         <td colSpan="2" id="cluebar">
-                            <Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
+                            <Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick} runTimer={running}/>
                         </td>
                     </tr>
                     <tr style={{height: "60px"}}>
@@ -402,7 +448,7 @@ const startGame = () => { // Called when user presses Start Game in a room
                                 {grid.map((row, rowIndex) => (
                                     <div key={rowIndex}>
                                         {row.map((cell, colIndex) => (
-                                            <input className="letter-box"
+                                            <input className={letterBoxColor(rowIndex, colIndex)}
                                             autoComplete='off'
                                             key={colIndex}
                                             id={"cell"+rowIndex+"-"+colIndex}

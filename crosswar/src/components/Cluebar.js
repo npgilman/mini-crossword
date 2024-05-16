@@ -7,9 +7,11 @@ const Cluebar = (props) => {
     const highlight = props.selected;
 
 
-    const [time, setTime] = useState(0);
+    //const [time, setTime] = useState(0);
     //const [running, setRunning] = useState(true);
     const running = props.runTimer;
+    const time = props.time;
+    const setTime= props.setTime;
 
     useEffect(() => { // timer functionality
         let interval;

@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom';
 import Cluebar from './Cluebar.js';
 import Loading from './Loading.js';
 import GameChat from './GameChat.js';
+import Scoreboard from './Scoreboard.js';
 
 let INCORRECT_CELL = "🟧"
 let EMPTY_CELL = "⬜"
@@ -13,11 +14,11 @@ let CORRECT_CELL = "🟩"
 export default function Grid(props) {
 
 // answers as reflected in the status board
-const [answers, setAnswers] = useState(["abcde",
-"fghij",
-"klmno",
-"pqrst",
-"uvwxy"]);
+const [answers, setAnswers] = useState(["qwert",
+"qwert",
+"qwert",
+"qwert",
+"qwert"]);
 
 // Grid variables
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill(""))); // Main grid variable that holds all user's inputs
@@ -41,8 +42,12 @@ const [gameStarted, setGameStarted] = useState(false); // Boolean var to determi
 const [playerFinished, setPlayerFinished] = useState(false); // Boolean to determine if user has finished their crossword
 const [playerFinishedCorrect, setPlayerFinishedCorrect] = useState(false); // Boolean to determine if user has entered all the correct answers
 
+// Winners
+const [winners, setWinners] = useState([]);
+
 // Timer running
 const [running, setRunning] = useState(false);
+const [time, setTime] = useState(0);
 
 
 const crosswordRef = useRef(null); // Necessary for moving from one input to another after key press
@@ -102,7 +107,14 @@ const handleStatusUpdate = () => { // Updates the status board when a cell chang
         setPlayerFinished(true);
         setPlayerFinishedCorrect(true);
         setRunning(false);
-        console.log("Finished with everything correct!")
+        console.log("Finished with everything correct!");
+
+        const finishData = {
+            room: props.room,
+            username: props.username,
+            time: time
+        }
+        props.socket.emit("send_finish", finishData);
     }
     else if (total == 25) {
         setPlayerFinished(false);
@@ -393,7 +405,7 @@ useEffect(() => {
         console.log(data.ans);
         // console.log(data.acrossClues);
         // console.log(data.downClues);
-        setAnswers(data.ans);
+        //setAnswers(data.ans);
         setAcrossCluesArray(data.acrossClues);
         setDownCluesArray(data.downClues);
         // Not done yet, implement after crossword generation is done.
@@ -410,6 +422,24 @@ useEffect(() => {
                 }
             }));
         }
+    });
+
+    props.socket.off("receive_winner").on("receive_winner", (data) => { // Called when someone finishes their crossword with everything correct
+        //setChatArr((list) => [...list, data]);
+        console.log(data);
+
+        setWinners((list) => [...list, data]);
+
+        // if(data.id != props.socket.id) { // Only update if user is not the player who made the change
+        //     setOpponentArr(opponentArr.map((opponent) => { // Replace the state
+        //         if(opponent.id === data.id) {
+        //             return { ...opponent, statusBoard: data.board }; // change the board variable if ids match
+        //         }
+        //         else {
+        //             return opponent; // return unchanged opponent object if ids don't match
+        //         }
+        //     }));
+        // }
     });
 
      return () => props.socket.on("receive_message");
@@ -439,7 +469,7 @@ const startGame = () => { // Called when user presses Start Game in a room
                 <table style={{color: "black", height: "1px", overflow: "scroll"}}>
                     <tr>
                         <td colSpan="2" id="cluebar">
-                            <Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick} runTimer={running}/>
+                            <Cluebar across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick} runTimer={running} time={time} setTime={setTime}/>
                         </td>
                     </tr>
                     <tr style={{height: "60px"}}>
@@ -486,11 +516,12 @@ const startGame = () => { // Called when user presses Start Game in a room
                                     </div>
                                     
                                 ) : (
-                                    <table style={{height: "100%"}}>
-                                        <tr id='cluebox'>
-                                            <Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
-                                        </tr>
-                                    </table>
+                                    <Scoreboard winner={winners}></Scoreboard>
+                                    // <table style={{height: "100%"}}>
+                                    //     <tr id='cluebox'>
+                                    //         <Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
+                                    //     </tr>
+                                    // </table>
                                 )
                             }
 

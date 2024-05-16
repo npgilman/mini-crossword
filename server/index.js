@@ -45,6 +45,11 @@ io.on("connection", (socket) => {
         io.in(data.room).emit("receive_message", data.message);
     });
 
+    socket.on("send_finish", (data) => {
+        console.log(data.username  + " just finished");
+        io.in(data.room).emit("receive_winner", data);
+    });
+
     socket.on("start_game", async (data) =>  { // Called when one user in a room presses Start Game
         // Tell other users in room to start the game
 

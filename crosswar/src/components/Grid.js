@@ -405,7 +405,7 @@ useEffect(() => {
         console.log(data.ans);
         // console.log(data.acrossClues);
         // console.log(data.downClues);
-        //setAnswers(data.ans);
+        setAnswers(data.ans);
         setAcrossCluesArray(data.acrossClues);
         setDownCluesArray(data.downClues);
         // Not done yet, implement after crossword generation is done.
@@ -516,12 +516,17 @@ const startGame = () => { // Called when user presses Start Game in a room
                                     </div>
                                     
                                 ) : (
-                                    <Scoreboard winner={winners}></Scoreboard>
-                                    // <table style={{height: "100%"}}>
-                                    //     <tr id='cluebox'>
-                                    //         <Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
-                                    //     </tr>
-                                    // </table>
+
+                                    
+                                        playerFinishedCorrect ? (
+                                            <Scoreboard winner={winners}></Scoreboard>
+                                        ) : (
+                                            <table style={{height: "100%"}}>
+                                                <tr id='cluebox'>
+                                                    <Clues across={acrossCluesArray} down={downCluesArray} selected={selectedClue} handleClueClick={handleClueClick}/>
+                                                </tr>
+                                            </table>
+                                        )                                                              
                                 )
                             }
 

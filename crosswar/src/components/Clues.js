@@ -8,8 +8,6 @@ const Clues = (props) => {
     // const row = props.row;
     // const rowIndex = props.rowIndex;
 
-    console.log(highlight);
-
     function handleClueClick(e, type, index) {
         props.handleClueClick(e, type, index);
     }

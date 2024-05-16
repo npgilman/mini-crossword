@@ -8,8 +8,11 @@
  */
 
 /// Libraries for CSV Parsing
-import { parse } from "csv-parse";
-import * as fs from 'fs';
+//import { parse } from "csv-parse";
+//const parse = require("csv-parse");
+//import * as fs from 'fs';
+const fs = require("fs");
+const { parse } = require('csv-parse');
 
 /**
  * 
@@ -77,6 +80,7 @@ function getClues(wordsInGrid, wordsAndClues)
  * @returns 
  */
 async function createClueMapping() {
+    console.log("Clue mapping!")
     try {
         let clueMap = await clueMapPromise();
         return clueMap;
@@ -89,7 +93,7 @@ function clueMapPromise() {
     return new Promise((resolve, reject) => {
         let clueMap = new Map();
     
-        fs.createReadStream("uniqueFives.csv")
+        fs.createReadStream(".\\CrosswordGenerator\\uniqueFives.csv")
           .pipe(parse({ delimiter: ",", from_line: 2 }))
           .on("data", function (row) {
             clueMap.set(row[0], row[1]);
@@ -380,4 +384,14 @@ function generateCrossword(grid, words, beginnings) {
     }
 }
 
-export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword, fisherYatesShuffle };
+module.exports = {
+    createClueMapping,
+    getWords,
+    getClues,
+    printGrid,
+    printClues,
+    generateCrossword,
+    fisherYatesShuffle
+};
+
+//export { createClueMapping, getWords, getClues, printGrid, printClues, generateCrossword, fisherYatesShuffle };

@@ -1,3 +1,6 @@
+
+const generator = require("./CrosswordGenerator/index.js");
+
 const express = require('express');
 const app = express();
 const http = require('http');
@@ -42,21 +45,59 @@ io.on("connection", (socket) => {
         io.in(data.room).emit("receive_message", data.message);
     });
 
-    socket.on("start_game", (data) =>  { // Called when one user in a room presses Start Game
+    socket.on("start_game", async (data) =>  { // Called when one user in a room presses Start Game
         // Tell other users in room to start the game
 
         // 1. Generate crossword
         //      not done (call function or something)
+            let generatorResults = await generator();
+            let clues = generatorResults[1];
+            let words = generatorResults[0];
+            //console.log(words);
+            //console.log(clues);
+            // for (let i = 0; i < clues.length; i++)
+            // {
+            //     console.log("HI");
+            //     console.log(((i)%5+1) + ". " + ((i < 5) ? "Across" : "Down") + ": " + clues[i]);
+            // }
 
         // 2. prepare data
+        // preparing words
+            let answers = [];
+            for (let i = 0; i < words.length; i++) {
+                let word = "";
+                for (let j = 0; j < 5; j++) {
+                    word = word + words[i][j];
+                }
+                //console.log(word);
+                answers.push(word.toLowerCase());
+            }
+
+        // preparing clues
+            let across = [];
+            let down = [];
+            for (let i = 0; i < clues.length; i++) {
+                if (i < 5) {
+                    across.push(clues[i]);
+                }
+                else {
+                    down.push(clues[i]);
+                }
+            }
+            //console.log(across);
+            //console.log(down);
 
         const gameData = {
-            room: data.room
+            room: data.room,
             // add crossword answers and clues here
+            ans: answers,
+            acrossClues: across,
+            downClues: down
         }
 
         // 3. Send Data
-        socket.to(data.room).emit("receive_game_start", gameData);
+        //socket.to(data.room).emit("receive_game_start", gameData);
+        io.sockets.in(data.room).emit("receive_game_start", gameData);
     });
 
     socket.on("send_board", (data) => {

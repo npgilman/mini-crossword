@@ -11,15 +11,21 @@ let EMPTY_CELL = "⬜"
 let CORRECT_CELL = "🟩"
 
 // answers as reflected in the status board
-let answers = [
-    "abcde",
-    "fghij",
-    "klmno",
-    "pqrst",
-    "uvwxy",
-]
+// let answers = [
+//     "abcde",
+//     "fghij",
+//     "klmno",
+//     "pqrst",
+//     "uvwxy",
+// ]
 
 export default function Grid(props) {
+
+const [answers, setAnswers] = useState(["abcde",
+"fghij",
+"klmno",
+"pqrst",
+"uvwxy"]);
 
 // Grid variables
 const [grid, setGrid] = useState(Array(5).fill("").map(row => new Array(5).fill(""))); // Main grid variable that holds all user's inputs
@@ -56,20 +62,25 @@ const handleStatusUpdate = () => { // Updates the status board when a cell chang
     for (let i = 0; i < numRows; i++) {
         for (let j = 0; j < numColumns; j++) {
             // cell is incorrect but statusboard isn't up to date
-            if (grid[i][j] !== answers[i][j] && grid[i][j] !== "") {
+            if (grid[i][j] != answers[i][j] && grid[i][j] !== "") {
                 //update statusboard and end loop
+                // console.log("ANSWER: "+answers[i][j]);
+                // console.log("RECEIVED: "+grid[i][j]);
+                //console.log("Incorrect - remove this");
                 newStatusBoard[i][j] = INCORRECT_CELL
             }
 
             // cell is empty but statusboard isn't up to date
             if (grid[i][j] === "") {
                 //update statusboard and end loop
+                //console.log("Empty - remove this");
                 newStatusBoard[i][j] = EMPTY_CELL
             }
 
             // cell is correct but statusboard isn't up to date
             if (grid[i][j] === answers[i][j]) {
                 //update statusboard and end loop
+                //console.log("correct - remove this");
                 newStatusBoard[i][j] = CORRECT_CELL
             }
         }
@@ -332,6 +343,13 @@ useEffect(() => {
         setGameStarted(true); // set gameStarted state to true
 
         // Set clues and crossword state variables
+        console.log("got from server:");
+        console.log(data.ans);
+        console.log(data.acrossClues);
+        console.log(data.downClues);
+        setAnswers(data.ans);
+        setAcrossCluesArray(data.acrossClues);
+        setDownCluesArray(data.downClues);
         // Not done yet, implement after crossword generation is done.
     });
 
@@ -361,7 +379,7 @@ useEffect(() => {
 // }, [])
 
 const startGame = () => { // Called when user presses Start Game in a room
-    setGameStarted(true);
+    //setGameStarted(true);
     const data = {
         room: props.room
     }

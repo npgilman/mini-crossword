@@ -34,7 +34,7 @@ const Scoreboard = (props) => {
               </div>
               </div>
             ) : (
-              ""
+              <div style={{fontFamily:"KeplerStdRegular"}}>Waiting for opponents to finish...</div>
             )
           }
 

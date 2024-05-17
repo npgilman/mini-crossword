@@ -29,6 +29,8 @@ io.on("connection", (socket) => {
             console.log(room.size);
             if (room.size >= 5) {
                 console.log("room is full!")
+                io.to(data.id).emit("reject_player", data);
+                return;
             }
         }
         

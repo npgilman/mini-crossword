@@ -27,7 +27,7 @@ function App() {
           {!gameScreen ? ( // Do not show game if user has not started game
             <Homescreen socket={socket} startGame={setGameScreen} username={username} setUsername={setUsername} room={room} setRoom={setRoom}/>
           ) : (
-            <Grid socket={socket} username={username} room={room}/>
+            <Grid socket={socket} username={username} room={room} setGameScreen={setGameScreen}/>
           )
           }
         </div>  

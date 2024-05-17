@@ -401,6 +401,12 @@ useEffect(() => {
 
         props.socket.emit("send_name", dataToSend); // Send user to data to server
     });
+
+    props.socket.on("reject_player", (data) => { // Room is full
+        console.log("setting to false")
+        props.setGameScreen(false);
+        alert("This room is full! Please try again later or choose a different room.")
+    });
     
 
     props.socket.off("receive_name").on("receive_name", (data) => { // Lets a player who just joined the room see who else is already in the room

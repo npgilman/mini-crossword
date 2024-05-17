@@ -23,6 +23,21 @@ io.on("connection", (socket) => {
     let roomSocket = "";
 
     socket.on("join_room", (data) => { // called when user joins a game
+
+        var room = io.sockets.adapter.rooms.get(data.room);
+        if (room) {
+            console.log(room.size);
+            if (room.size >= 5) {
+                console.log("room is full!")
+            }
+        }
+        
+        // if (io.sockets.clients(data.room)) {
+        //         let numPlayers = io.sockets.clients(data.room)
+        //         console.log("There are " + numPlayers + " in the room " +  data.room);
+        
+        // }
+        
         socket.nickname = data.username;
         socket.join(data.room); // puts user in room
         roomSocket = data.room;

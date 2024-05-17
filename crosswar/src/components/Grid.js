@@ -360,6 +360,13 @@ function letterBoxColor(rowIndex, colIndex) {
 
 useEffect(() => {
     props.socket.off("announce_player").on("announce_player", (data) => { // Called when a new opponent joins the room
+
+        console.log(gameStarted);
+        if (gameStarted) {
+            console.log("test game started");
+            return;
+        }
+
         console.log(data.username + " and id " + data.id + " has joined the room!");
         setChatArr((list) => [...list, (data.username + " joined the room!")]); // update messages with user joining message
 
@@ -415,6 +422,11 @@ useEffect(() => {
     });
 
     props.socket.on("receive_game_start", (data) => { // Start game
+
+        if (gameStarted) {
+            return;
+        }
+
         setGameStarted(true); // set gameStarted state to true
         setRunning(true);
 
@@ -444,10 +456,9 @@ useEffect(() => {
 
     props.socket.off("receive_winner").on("receive_winner", (data) => { // Called when someone finishes their crossword with everything correct
         
-        console.log(data);
-        console.log("Win length: " + winners.length);
-        console.log("Opponent length: " + opponentArr.length);
-        console.log("Player finished correct: " + playerFinishedCorrect);
+            if (!gameStarted) {
+                return;
+            }
 
         
 
@@ -506,7 +517,7 @@ useEffect(() => {
     // return () => props.socket.on("announce_player");
     // return () =>props.socket.on("receive_player");
 
-}, [props.socket, opponentArr]);
+}, [props.socket, opponentArr, gameStarted]);
 
 // /* This is used to render the Opponent's status board. It makes sure div exists before trying to render in it*/
 // const [domReady, setDomReady] = React.useState(false)

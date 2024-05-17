@@ -53,6 +53,9 @@ const [time, setTime] = useState(0);
 const [showStartButton, setShowStartButton] = useState(true);
 const [startButtonMessage, setStartButtonMessage] = useState("Start Game")
 
+// Play again button
+const [showPlayAgain, setShowPlayAgain] = useState(false);
+
 
 const crosswordRef = useRef(null); // Necessary for moving from one input to another after key press
 
@@ -403,7 +406,7 @@ useEffect(() => {
         setChatArr((list) => [...list, data]);
     });
 
-    props.socket.on("receive_start_disable", (data) => {
+    props.socket.off("receive_start_disable").on("receive_start_disable", (data) => {
 
         setChatArr((list) => [...list, (data.username + " started the game!")]);
 
@@ -440,21 +443,44 @@ useEffect(() => {
     });
 
     props.socket.off("receive_winner").on("receive_winner", (data) => { // Called when someone finishes their crossword with everything correct
-        //setChatArr((list) => [...list, data]);
+        
         console.log(data);
+        console.log("Win length: " + winners.length);
+        console.log("Opponent length: " + opponentArr.length);
+        console.log("Player finished correct: " + playerFinishedCorrect);
+
+        
+
+        if ((winners.length >= opponentArr.length) || opponentArr.length == 0) { // Check if everyone is finished
+            console.log("disconnecting")
+
+            // Disconnect from room
+            const toSend = {
+                room: props.room,
+                id: props.socket.id
+            }
+            setTimeout(1000)
+            props.socket.emit("send_disconnect_request", toSend);
+
+            // Display play again button
+            setShowPlayAgain(true);
+
+            if(data.id != props.socket.id) { // Only update if user is not the player who made the change
+                setOpponentArr(opponentArr.map((opponent) => { // Replace the state
+                    if(opponent.username === data.username) {
+                        return { ...opponent, statusBoard: statusBoard }; // change the board variable if ids match
+                    }
+                    else {
+                        return opponent; // return unchanged opponent object if ids don't match
+                    }
+                }));
+            }
+
+
+        }
+
 
         setWinners((list) => [...list, data]);
-
-        // if(data.id != props.socket.id) { // Only update if user is not the player who made the change
-        //     setOpponentArr(opponentArr.map((opponent) => { // Replace the state
-        //         if(opponent.id === data.id) {
-        //             return { ...opponent, statusBoard: data.board }; // change the board variable if ids match
-        //         }
-        //         else {
-        //             return opponent; // return unchanged opponent object if ids don't match
-        //         }
-        //     }));
-        // }
     });
 
     props.socket.off("receive_opponent_leaving").on("receive_opponent_leaving", (data) => {
@@ -490,6 +516,8 @@ useEffect(() => {
 
 const startGame = () => { // Called when user presses Start Game in a room
     //setGameStarted(true);
+    console.log("test")
+    console.log(showStartButton);
     if (showStartButton == false) {
         return;
     }
@@ -501,6 +529,51 @@ const startGame = () => { // Called when user presses Start Game in a room
     }
     props.socket.emit("send_start_disable", data);
     props.socket.emit("start_game", data);
+}
+
+const playAgain = () => { // Called when user presses play again after playing a game
+
+
+// // Chat variables
+// const [chatArr, setChatArr] = useState([props.username + " joined the room!"]) // Holds list of messages in pregame chat
+
+
+
+    // Connect to room again
+    const userData = {
+        username: props.username,
+        room: props.room,
+        id: props.socket.id
+    }
+
+    props.socket.emit("join_room", userData); // tell server to join user to room, sends a variable with entered username and room to server
+
+    // Reset all necessary variables
+    setAnswers(["qwert",
+    "qwert",
+    "qwert",
+    "qwert",
+    "qwert"]);
+    setGrid(Array(5).fill("").map(row => new Array(5).fill("")));
+    setSelection({ row: -1, col: -1, cell: [-1, -1]});
+    setStatusBoard(Array(5).fill().map(() => new Array(5).fill(EMPTY_CELL)));
+    setAcrossCluesArray(Array(5).fill("across across across across across across across across"));
+    setDownCluesArray(Array(5).fill("down down down down down down down down down down down down down"));
+    setSelectedClue(0);
+    setNumOpponents(0);
+    setOpponentArr([]);
+    setGameStarted(false);
+    setPlayerFinished(false);
+    setPlayerFinishedCorrect(false);
+    setWinners([]);
+    setRunning(false);
+    setTime(0);
+    setShowStartButton(true);
+    setStartButtonMessage("Start Game");
+    setShowPlayAgain(false);
+
+
+
 }
 
   return (
@@ -560,7 +633,10 @@ const startGame = () => { // Called when user presses Start Game in a room
 
                                     
                                         playerFinishedCorrect ? (
-                                            <Scoreboard winner={winners}></Scoreboard>
+                                            <>
+                                            <Scoreboard winner={winners} showPlay={showPlayAgain} playClick={playAgain}></Scoreboard>
+
+                                            </>
                                         ) : (
                                             <table style={{height: "100%"}}>
                                                 <tr id='cluebox'>

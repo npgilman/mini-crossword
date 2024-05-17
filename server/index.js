@@ -108,11 +108,16 @@ io.on("connection", (socket) => {
 
         // 3. Send Data
         //socket.to(data.room).emit("receive_game_start", gameData);
+        console.log("Giving generated crosswar to room...");
         io.sockets.in(data.room).emit("receive_game_start", gameData);
     });
 
     socket.on("send_board", (data) => {
         socket.to(data.room).emit("receive_board", data);
+    });
+
+    socket.on("send_disconnect_request", (data) => {
+        io.in(data.id).socketsLeave(data.room);
     });
 
     socket.on("disconnect", () => {

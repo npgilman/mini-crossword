@@ -20,10 +20,12 @@ const io = new Server(server, {
 
 io.on("connection", (socket) => {
     console.log("User Connected: " + socket.id);
+    let roomSocket = "";
 
     socket.on("join_room", (data) => { // called when user joins a game
         socket.nickname = data.username;
         socket.join(data.room); // puts user in room
+        roomSocket = data.room;
         console.log("User with ID: " + socket.id + " and username: '" + data.username + "' joined room: '" + data.room + "'");
 
         const userInfo = {
@@ -48,6 +50,10 @@ io.on("connection", (socket) => {
     socket.on("send_finish", (data) => {
         console.log(data.username  + " just finished");
         io.in(data.room).emit("receive_winner", data);
+    });
+
+    socket.on("send_start_disable", (data) => {
+        io.in(data.room).emit("receive_start_disable", data);
     });
 
     socket.on("start_game", async (data) =>  { // Called when one user in a room presses Start Game
@@ -110,6 +116,11 @@ io.on("connection", (socket) => {
     });
 
     socket.on("disconnect", () => {
+        console.log(roomSocket);
+        const data = {
+            id: socket.id
+        }
+        socket.to(roomSocket).emit("receive_opponent_leaving", data)
         console.log("User Disconnected", socket.id);
     });
 });

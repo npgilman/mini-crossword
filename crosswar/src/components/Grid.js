@@ -49,6 +49,10 @@ const [winners, setWinners] = useState([]);
 const [running, setRunning] = useState(false);
 const [time, setTime] = useState(0);
 
+// Start button
+const [showStartButton, setShowStartButton] = useState(true);
+const [startButtonMessage, setStartButtonMessage] = useState("Start Game")
+
 
 const crosswordRef = useRef(null); // Necessary for moving from one input to another after key press
 
@@ -222,6 +226,9 @@ const handleCellClick = (e, rowIndex, colIndex) => { // highlight row or column
 
 const handleCellChange = (e, rowIndex, colIndex) => {
     // Key entered is in e.key
+    if (playerFinishedCorrect) {
+        return;
+    }
     if (e.key !== "Backspace" && e.key.length > 1) {
         // Prevents keys like "Up" for the up arrow key from doing anything
     }
@@ -349,7 +356,7 @@ function letterBoxColor(rowIndex, colIndex) {
 }
 
 useEffect(() => {
-    props.socket.on("announce_player", (data) => { // Called when a new opponent joins the room
+    props.socket.off("announce_player").on("announce_player", (data) => { // Called when a new opponent joins the room
         console.log(data.username + " and id " + data.id + " has joined the room!");
         setChatArr((list) => [...list, (data.username + " joined the room!")]); // update messages with user joining message
 
@@ -386,7 +393,7 @@ useEffect(() => {
     });
     
 
-    props.socket.on("receive_name", (data) => { // Lets a player who just joined the room see who else is already in the room
+    props.socket.off("receive_name").on("receive_name", (data) => { // Lets a player who just joined the room see who else is already in the room
         if (data.toId == props.socket.id) {
             setOpponentArr(data.oppList);
         }
@@ -394,6 +401,14 @@ useEffect(() => {
 
     props.socket.on("receive_message", (data) => {
         setChatArr((list) => [...list, data]);
+    });
+
+    props.socket.on("receive_start_disable", (data) => {
+
+        setChatArr((list) => [...list, (data.username + " started the game!")]);
+
+        setShowStartButton(false);
+        setStartButtonMessage("Generating Crossword...");
     });
 
     props.socket.on("receive_game_start", (data) => { // Start game
@@ -442,6 +457,25 @@ useEffect(() => {
         // }
     });
 
+    props.socket.off("receive_opponent_leaving").on("receive_opponent_leaving", (data) => {
+        // When a user leaves, send a message to other players of leaving and remove from opponent array
+
+        let oldOpponentArray = opponentArr;
+
+        setOpponentArr(opponentArr.filter(opp =>  // removing from array
+            data.id != opp.id
+        ))
+
+        for (let i = 0; i < oldOpponentArray.length; i++) { // send message
+            if (oldOpponentArray[i].id == data.id) {
+                setChatArr((list) => [...list, (oldOpponentArray[i].username + " left the room.")]); // update messages with user leaving message
+            }
+        }
+
+        
+
+    });
+
      return () => props.socket.on("receive_message");
     // return () => props.socket.on("announce_player");
     // return () =>props.socket.on("receive_player");
@@ -456,9 +490,16 @@ useEffect(() => {
 
 const startGame = () => { // Called when user presses Start Game in a room
     //setGameStarted(true);
-    const data = {
-        room: props.room
+    if (showStartButton == false) {
+        return;
     }
+    
+
+    const data = {
+        room: props.room,
+        username: props.username
+    }
+    props.socket.emit("send_start_disable", data);
     props.socket.emit("start_game", data);
 }
 
@@ -498,8 +539,8 @@ const startGame = () => { // Called when user presses Start Game in a room
                                 !gameStarted ? (
                                     <div style={{width: "100%", height: "100%", position: "absolute", top:"0", left: "0", backgroundColor: "rgba(0,0,0,0.0)"}}>
                                         <div id="button-1" style={{marginTop: "13vh", marginLeft:"4vw", marginRight:"4vw", marginBottom: "auto", zIndex: "1" ,  fontSize: "4.5vh", fontFamily: "KeplerStdBoldCaption", textAlign: "left", backgroundColor: "white", boxShadow: "2px 2px 2px 3px", padding: "20px 10px", textAlign: "center"}}
-                                            onClick={startGame} >
-                                            Start Game
+                                            onClick={startGame} disabled={showStartButton}>
+                                            {startButtonMessage}
                                         </div>
                                     </div>
                                 ) : (
@@ -539,9 +580,8 @@ const startGame = () => { // Called when user presses Start Game in a room
         <table style={{color: "black"}}>
             <tr>
                 {
-                    
-                }
-                <td style={{width: "25%", fontFamily: "Serif"}}>
+                  opponentArr.length >= 1 || !gameStarted  ? (
+                    <td style={{width: "25%", fontFamily: "Serif"}}>
                     <div class="papers" style={{transform: "rotateZ(6deg) translateY(-1em) translateX(-2em)"}}>
                     <img src="https://www.pngall.com/wp-content/uploads/2/Drawing-Pin.png" style={{height: "35px", padding: "0px", marginLeft: "-20px"}}/> 
                         {
@@ -563,10 +603,15 @@ const startGame = () => { // Called when user presses Start Game in a room
                         </div>
                     </div>
                 </td >
+                    ) : (
+                        ""
+                    )
+                }
+
                 {
                     opponentArr.length < 1 ? (
                         ""
-                    ) : (
+                    ) :  opponentArr.length >= 2 || !gameStarted ? (
 
                 <td style={{width: "25%", fontFamily: "Serif"} }>
                     <div class="papers" style={{transform: "rotateZ(-5deg) translateY(0.5em) translateX(-0.5em)"}}>
@@ -589,12 +634,14 @@ const startGame = () => { // Called when user presses Start Game in a room
                         </div>
                     </div>
                 </td>
+                    ) : (
+                        ""
                     )
                 }
                 {
                     opponentArr.length < 2 ? (
                         ""
-                    ) : (
+                    ) : opponentArr.length >= 3 || !gameStarted ? (
 
                 <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
                     <div class="papers" style={{transform: "rotateZ(7deg) translateY(-0.5em) translateX(1em)"}}>
@@ -618,12 +665,14 @@ const startGame = () => { // Called when user presses Start Game in a room
                     </div>
                 </td>
                                         
+                    ) : (
+                        ""
                     )
                 }
                 {
                     opponentArr.length < 3 ? (
                         ""
-                    ) : (
+                    ) : opponentArr.length >= 4 || !gameStarted ? (
 
 
                 <td style={{width: "25%", fontFamily: "RansomBlancoZero"}}>
@@ -648,6 +697,8 @@ const startGame = () => { // Called when user presses Start Game in a room
                     </div>
                     </div>
                 </td>
+                    ) : (
+                        ""
                     )
                 }
             </tr>

@@ -232,8 +232,160 @@ const handleCellChange = (e, rowIndex, colIndex) => {
     if (playerFinishedCorrect) {
         return;
     }
-    if (e.key !== "Backspace" && e.key.length > 1) {
+    if (e.key !== "Backspace" && e.key !== "Enter" && e.key !== "ArrowRight" && e.key !== "ArrowLeft" && e.key !== "ArrowDown"  && e.key !== "ArrowUp" && e.key.length > 1) {
         // Prevents keys like "Up" for the up arrow key from doing anything
+    }
+    else if (e.key === "ArrowUp") {
+        if (selection.row !== -1) {
+            rowIndex = rowIndex - 1;
+            if (rowIndex == -1) {
+                rowIndex = 4;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+        if (selection.col !== -1) {
+            rowIndex = rowIndex - 1;
+            if (rowIndex == -1) {
+                rowIndex = 4;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+    }
+    else if (e.key === "ArrowDown") {
+        if (selection.row !== -1) {
+            rowIndex = rowIndex + 1;
+            if (rowIndex == 5) {
+                rowIndex = 0;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+        if (selection.col !== -1) {
+            rowIndex = rowIndex + 1;
+            if (rowIndex == 5) {
+                rowIndex = 0;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+    }
+    else if (e.key === "ArrowRight") {
+        if (selection.row !== -1) {
+            colIndex = colIndex + 1;
+            if (colIndex == 5) {
+                colIndex = 0;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+        if (selection.col !== -1) {
+            colIndex = colIndex + 1;
+            if (colIndex == 5) {
+                colIndex = 0;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+    }
+    else if (e.key === "ArrowLeft") {
+        if (selection.row !== -1) {
+            colIndex = colIndex - 1;
+            if (colIndex == -1) {
+                colIndex = 4;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: rowIndex, col: -1, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+        if (selection.col !== -1) {
+            colIndex = colIndex - 1;
+            if (colIndex == -1) {
+                colIndex = 4;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + colIndex +'');
+            if (cell) {
+                // change selection
+                setSelection({ row: -1, col: colIndex, cell: [rowIndex, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
+    }
+    else if (e.key === "Enter") {
+        if (selection.row !== -1) {
+            rowIndex = rowIndex + 1;
+            if (rowIndex == 5) {
+                rowIndex = 0;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + rowIndex + '-' + 0 +'');
+            console.log("Got: Row - " + rowIndex + " Col - " + 0)
+            if (cell) {
+                // change selection
+                setSelection({ row: rowIndex, col: -1, cell: [rowIndex, 0]});
+
+                // focus
+                cell.focus();
+            }
+        }
+        if (selection.col !== -1) {
+            colIndex = colIndex + 1;
+            if (colIndex == 5) {
+                colIndex = 0;
+            }
+            const cell = crosswordRef.current.querySelector('#cell' + 0 + '-' + colIndex +'');
+            console.log("Got: Row - " + 0 + " Col - " + colIndex)
+            if (cell) {
+                // change selection
+                setSelection({ row: -1, col: colIndex, cell: [0, colIndex]});
+
+                // focus
+                cell.focus();
+            }
+        }
     }
     else if (e.key === "Backspace") { // backspace pressed
         if (e.target.value !== "") {
